@@ -24,5 +24,4 @@ public class RolePermission {
         grantedAt = Instant.now();
     }
 
-    // getters and setters
 }

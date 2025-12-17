@@ -1,10 +1,27 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+import java.time.Instant;
+
 @Entity
-@Getter @Setter
+@Table(name = "user_roles")
 public class UserRole {
-@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-@ManyToOne private UserAccount user;
-@ManyToOne private Role role;
-private Instant assignedAt;
-@PrePersist void pre(){ assignedAt = Instant.now(); }
-}
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(optional = false)
+    private UserAccount user;
+
+    @ManyToOne(optional = false)
+    private Role role;
+
+    private Instant assignedAt;
+
+    @PrePersist
+    protected void onAssign() {
+        assignedAt = Instant.now();
+    }
+
+   
