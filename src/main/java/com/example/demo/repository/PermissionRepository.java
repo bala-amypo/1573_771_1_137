@@ -4,3 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.demo.entity.*;
 import java.util.Optional;
 import java.util.List;
+public interface PermissionRepository extends JpaRepository<Permission, Long> {
+    Optional<Permission> findByPermissionKey(String permissionKey);
+}
