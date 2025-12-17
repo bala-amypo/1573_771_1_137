@@ -1,15 +1,40 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+import java.time.Instant;
+
 @Entity
-@Getter @Setter
+@Table(name = "user_accounts", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+})
 public class UserAccount {
-@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-@Column(unique = true, nullable = false)
-private String email;
-private String password;
-private String fullName;
-private Boolean active = true;
-private Instant createdAt;
-private Instant updatedAt;
-@PrePersist void pre(){ createdAt = updatedAt = Instant.now(); }
-@PreUpdate void upd(){ updatedAt = Instant.now(); }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String fullName;
+
+    @Column(nullable = false)
+    private Boolean active = true;
+
+    private Instant createdAt;
+    private Instant updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = createdAt;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+    }
+
+    
 }
