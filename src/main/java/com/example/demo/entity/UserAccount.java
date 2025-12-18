@@ -36,5 +36,5 @@ public class UserAccount {
         updatedAt = Instant.now();
     }
 
-    
+    // getters and setters
 }
