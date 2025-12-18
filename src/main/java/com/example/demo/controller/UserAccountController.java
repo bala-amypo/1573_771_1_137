@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.UserAccountRequestDto;
-import com.example.demo.dto.UserAccountResponseDto;
+import com.example.demo.entity.UserAccount;
 import com.example.demo.service.UserAccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -23,29 +22,29 @@ public class UserAccountController {
 
     // POST /api/users - Create user
     @PostMapping
-    public ResponseEntity<UserAccountResponseDto> createUser(
-            @RequestBody UserAccountRequestDto request) {
+    public ResponseEntity<UserAccount> createUser(
+            @RequestBody UserAccount userAccount) {
 
         return new ResponseEntity<>(
-                userAccountService.createUser(request),
+                userAccountService.createUser(userAccount),
                 HttpStatus.CREATED
         );
     }
 
     // PUT /api/users/{id} - Update user
     @PutMapping("/{id}")
-    public ResponseEntity<UserAccountResponseDto> updateUser(
+    public ResponseEntity<UserAccount> updateUser(
             @PathVariable Long id,
-            @RequestBody UserAccountRequestDto request) {
+            @RequestBody UserAccount userAccount) {
 
         return ResponseEntity.ok(
-                userAccountService.updateUser(id, request)
+                userAccountService.updateUser(id, userAccount)
         );
     }
 
     // GET /api/users/{id} - Get user by ID
     @GetMapping("/{id}")
-    public ResponseEntity<UserAccountResponseDto> getUserById(
+    public ResponseEntity<UserAccount> getUserById(
             @PathVariable Long id) {
 
         return ResponseEntity.ok(
@@ -55,7 +54,7 @@ public class UserAccountController {
 
     // GET /api/users - List users
     @GetMapping
-    public ResponseEntity<List<UserAccountResponseDto>> getAllUsers() {
+    public ResponseEntity<List<UserAccount>> getAllUsers() {
         return ResponseEntity.ok(
                 userAccountService.getAllUsers()
         );
