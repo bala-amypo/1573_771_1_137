@@ -34,4 +34,33 @@ public class UserRoleServiceImpl implements UserRoleService {
         UserAccount user = userAccountRepository.findById(mapping.getUser().getId())
                 .orElseThrow(() -> new BadRequestException("Invalid user"));
 
-        Role role = roleRepository.findById(mapping.getRole().getId(
+        Role role = roleRepository.findById(mapping.getRole().getId())
+                .orElseThrow(() -> new BadRequestException("Invalid role"));
+
+        if (!user.getActive() || !role.getActive()) {
+            throw new BadRequestException("User or Role inactive");
+        }
+
+        mapping.setUser(user);
+        mapping.setRole(role);
+
+        return userRoleRepository.save(mapping);
+    }
+
+    @Override
+    public List<UserRole> getRolesForUser(Long userId) {
+        return userRoleRepository.findByUser_Id(userId);
+    }
+
+    @Override
+    public UserRole getMappingById(Long id) {
+        return userRoleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Mapping not found"));
+    }
+
+    @Override
+    public void removeRole(Long mappingId) {
+        UserRole mapping = getMappingById(mappingId);
+        userRoleRepository.delete(mapping);
+    }
+}
