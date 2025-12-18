@@ -1,40 +1,62 @@
 package com.example.demo.entity;
 
-
 import jakarta.persistence.*;
-
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "permissions", uniqueConstraints = {
-@UniqueConstraint(columnNames = "permissionKey")
-})
+@Table(name = "permissions")
 public class Permission {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
+    @Column(nullable = false, unique = true)
+    private String permissionName;
 
+    private boolean active = true;
 
-@Column(nullable = false, unique = true)
-private String permissionKey;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
+    public Permission() {
+    }
 
-private String description;
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
-@Column(nullable = false)
-private Boolean active = true;
+    public Long getId() {
+        return id;
+    }
 
+    public String getPermissionName() {
+        return permissionName;
+    }
 
-public Permission() {}
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
+    }
 
+    public boolean isActive() {
+        return active;
+    }
 
-public Permission(String permissionKey, String description, Boolean active) {
-this.permissionKey = permissionKey;
-this.description = description;
-this.active = active != null ? active : true;
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }
-
-
-// Getters and Sette
