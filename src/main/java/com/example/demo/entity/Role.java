@@ -37,5 +37,8 @@ this.active = active != null ? active : true;
 }
 
 
-// Getters and Setters
+public String getRoleName() { return roleName; }
+public String getDescription() { return description; }
+public boolean getActive() { return active; }
+
 }
