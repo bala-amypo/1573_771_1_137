@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.UserAccount;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
@@ -19,6 +20,9 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public UserAccount createUser(UserAccount user) {
+        if (userAccountRepository.existsByEmail(user.getEmail())) {
+            throw new BadRequestException("Email already exists");
+        }
         return userAccountRepository.save(user);
     }
 
@@ -33,8 +37,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public UserAccount getUserById(Long id) {
         return userAccountRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
