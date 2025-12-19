@@ -13,7 +13,6 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                // PUBLIC preview URL (NOT internal server port)
                 .servers(List.of(
                         new Server().url("https://9263.408procr.amypo.ai")
                 ));
