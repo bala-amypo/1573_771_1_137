@@ -18,8 +18,8 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     public UserRole assignRoleToUser(UserRole userRole) {
 
-        Long userId = userRole.getUser().getId();
-        Long roleId = userRole.getRole().getId();
+        long userId = userRole.getUser().getId();
+        long roleId = userRole.getRole().getId();
 
         // ✅ Fetch managed entities
         UserAccount user = userAccountRepository.findById(userId)
@@ -44,24 +44,24 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public UserRole getUserRoleById(Long id) {
+    public UserRole getUserRoleById(long id) {
         return userRoleRepository.findById(id)
                 .orElseThrow(() ->
                         new NoSuchElementException("UserRole not found with id: " + id));
     }
 
     @Override
-    public List<UserRole> getRolesByUserId(Long userId) {
+    public List<UserRole> getRolesByUserId(long userId) {
         return userRoleRepository.findByUserId(userId);
     }
 
     @Override
-    public List<UserRole> getUsersByRoleId(Long roleId) {
+    public List<UserRole> getUsersByRoleId(long roleId) {
         return userRoleRepository.findByRoleId(roleId);
     }
 
     @Override
-    public void removeRoleFromUser(Long id) {
+    public void removeRoleFromUser(long id) {
         if (!userRoleRepository.existsById(id)) {
             throw new NoSuchElementException("UserRole not found with id: " + id);
         }
