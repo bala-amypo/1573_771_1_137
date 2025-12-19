@@ -1,13 +1,3 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.entity.UserRole;
-import com.example.demo.repository.UserRoleRepository;
-import com.example.demo.service.UserRoleService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-
 @Service
 public class UserRoleServiceImpl implements UserRoleService {
 
@@ -19,6 +9,15 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     public UserRole assignRoleToUser(UserRole userRole) {
+
+        if (userRole.getUser() == null || userRole.getUser().getId() == null) {
+            throw new IllegalArgumentException("User ID is required");
+        }
+
+        if (userRole.getRole() == null || userRole.getRole().getId() == null) {
+            throw new IllegalArgumentException("Role ID is required");
+        }
+
         Long userId = userRole.getUser().getId();
         Long roleId = userRole.getRole().getId();
 
@@ -34,7 +33,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     public UserRole getUserRoleById(Long id) {
         return userRoleRepository.findById(id)
                 .orElseThrow(() ->
-                        new NoSuchElementException("UserRole not found with id: " + id));
+                        new RuntimeException("UserRole not found with id: " + id));
     }
 
     @Override
@@ -50,7 +49,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     public void removeRoleFromUser(Long id) {
         if (!userRoleRepository.existsById(id)) {
-            throw new NoSuchElementException("UserRole not found with id: " + id);
+            throw new RuntimeException("UserRole not found with id: " + id);
         }
         userRoleRepository.deleteById(id);
     }
