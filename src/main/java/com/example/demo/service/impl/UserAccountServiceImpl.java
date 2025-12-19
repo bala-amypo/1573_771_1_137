@@ -30,7 +30,7 @@ return userAccountRepository.save(user);
 }
 
 
-public UserAccount updateUser(Long id, UserAccount user) {
+public UserAccount updateUser(long id, UserAccount user) {
 UserAccount existing = userAccountRepository.findById(id)
 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 existing.setEmail(user.getEmail());
@@ -41,7 +41,7 @@ return userAccountRepository.save(existing);
 }
 
 
-public UserAccount getUserById(Long id) {
+public UserAccount getUserById(long id) {
 return userAccountRepository.findById(id)
 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 }
@@ -52,7 +52,7 @@ return userAccountRepository.findAll();
 }
 
 
-public void deactivateUser(Long id) {
+public void deactivateUser(long id) {
 UserAccount user = userAccountRepository.findById(id)
 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 user.setActive(false);
