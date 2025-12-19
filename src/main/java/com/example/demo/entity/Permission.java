@@ -37,11 +37,39 @@ this.active = active != null ? active : true;
 }
 
 
-public long getId() { return id; }
-public void setId(long id) { this.id = id; }
-public String getPermissionKey() { return permissionKey; }
-public void setPermissionKey(String permissionKey) { this.permissionKey = permissionKey; }
-public String getDescription() { return description; }
-public void setDescription(String description) { this.description = description; }
-public Boolean getActive() { return active; }
+public long getId() {
+return id;
+}
+
+
+public void setId(long id) {
+this.id = id;
+}
+
+
+public String getPermissionKey() {
+return permissionKey;
+}
+
+
+public void setPermissionKey(String permissionKey) {
+this.permissionKey = permissionKey;
+}
+
+
+public String getDescription() {
+return description;
+}
+
+
+public void setDescription(String description) {
+this.description = description;
+}
+
+
+public Boolean getActive() {
+return active;
+}
+
+
 public void setActive(Boolean active) { this.active = active; }
