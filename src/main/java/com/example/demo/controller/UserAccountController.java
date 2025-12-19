@@ -32,14 +32,14 @@ return userAccountService.createUser(user);
 
 @PutMapping("/{id}")
 @Operation(summary = "Update user")
-public UserAccount updateUser(@PathVariable Long id, @RequestBody UserAccount user) {
+public UserAccount updateUser(@PathVariable long id, @RequestBody UserAccount user) {
 return userAccountService.updateUser(id, user);
 }
 
 
 @GetMapping("/{id}")
 @Operation(summary = "Get user by id")
-public UserAccount getUser(@PathVariable Long id) {
+public UserAccount getUser(@PathVariable long id) {
 return userAccountService.getUserById(id);
 }
 
@@ -53,7 +53,7 @@ return userAccountService.getAllUsers();
 
 @PutMapping("/{id}/deactivate")
 @Operation(summary = "Deactivate user")
-public void deactivate(@PathVariable Long id) {
+public void deactivate(@PathVariable long id) {
 userAccountService.deactivateUser(id);
 }
 }
