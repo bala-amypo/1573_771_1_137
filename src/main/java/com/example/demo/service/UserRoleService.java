@@ -7,11 +7,11 @@ public interface UserRoleService {
 
     UserRole assignRoleToUser(UserRole userRole);
 
-    UserRole getUserRoleById(Long id);
+    UserRole getUserRoleById(long id);
 
-    List<UserRole> getRolesByUserId(Long userId);
+    List<UserRole> getRolesByUserId(long userId);
 
-    List<UserRole> getUsersByRoleId(Long roleId);
+    List<UserRole> getUsersByRoleId(long roleId);
 
-    void removeRoleFromUser(Long id);
+    void removeRoleFromUser(long id);
 }

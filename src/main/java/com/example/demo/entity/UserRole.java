@@ -6,15 +6,13 @@ import java.time.LocalDateTime;
 @Entity
 @Table(
     name = "user_roles",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "role_id"})
-    }
+    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"})
 )
 public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
@@ -32,37 +30,17 @@ public class UserRole {
         this.assignedAt = LocalDateTime.now();
     }
 
-    // ===== getters & setters =====
+    // ===== Getters & Setters =====
 
-    public Long getId() {
-        return id;
-    }
+    public long getId() { return id; }
+    public void setId(long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public UserAccount getUser() { return user; }
+    public void setUser(UserAccount user) { this.user = user; }
 
-    public UserAccount getUser() {
-        return user;
-    }
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
 
-    public void setUser(UserAccount user) {
-        this.user = user;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public LocalDateTime getAssignedAt() {
-        return assignedAt;
-    }
-
-    public void setAssignedAt(LocalDateTime assignedAt) {
-        this.assignedAt = assignedAt;
-    }
+    public LocalDateTime getAssignedAt() { return assignedAt; }
+    public void setAssignedAt(LocalDateTime assignedAt) { this.assignedAt = assignedAt; }
 }
