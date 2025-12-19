@@ -1,75 +1,59 @@
 package com.example.demo.entity;
 
-
 import jakarta.persistence.*;
 
-
 @Entity
-@Table(name = "permissions", uniqueConstraints = @UniqueConstraint(columnNames = "permissionKey"))
+@Table(
+    name = "permissions",
+    uniqueConstraints = @UniqueConstraint(columnNames = "permission_key")
+)
 public class Permission {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private long id;
+    @Column(name = "permission_key", nullable = false, unique = true)
+    private String permissionKey;
 
+    @Column(nullable = false)
+    private String description;
 
-@Column(nullable = false, unique = true)
-private String permissionKey;
+    @Column(nullable = false)
+    private Boolean active = true;
 
+    public Permission() {
+    }
 
-@Column(nullable = false)
-private String description;
+    public long getId() {
+        return id;
+    }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
-@Column(nullable = false)
-private Boolean active = true;
+    public String getPermissionKey() {
+        return permissionKey;
+    }
 
+    public void setPermissionKey(String permissionKey) {
+        this.permissionKey = permissionKey;
+    }
 
-public Permission() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }
-
-
-public Permission(String permissionKey, String description, Boolean active) {
-this.permissionKey = permissionKey;
-this.description = description;
-this.active = active != null ? active : true;
-}
-
-
-public long getId() {
-return id;
-}
-
-
-public void setId(long id) {
-this.id = id;
-}
-
-
-public String getPermissionKey() {
-return permissionKey;
-}
-
-
-public void setPermissionKey(String permissionKey) {
-this.permissionKey = permissionKey;
-}
-
-
-public String getDescription() {
-return description;
-}
-
-
-public void setDescription(String description) {
-this.description = description;
-}
-
-
-public Boolean getActive() {
-return active;
-}
-
-
-public void setActive(Boolean active) { this.active = active; }
