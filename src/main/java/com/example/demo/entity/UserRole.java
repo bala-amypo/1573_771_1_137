@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(
     name = "user_roles",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"})
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "role_id"})
+    }
 )
 public class UserRole {
 
@@ -31,7 +33,6 @@ public class UserRole {
     }
 
     // ===== Getters & Setters =====
-
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 

@@ -13,5 +13,7 @@ public interface UserRoleService {
 
     List<UserRole> getUsersByRoleId(long roleId);
 
+    UserRole updateUserRole(long id, UserRole userRole);
+
     void removeRoleFromUser(long id);
 }

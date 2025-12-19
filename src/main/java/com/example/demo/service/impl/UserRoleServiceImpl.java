@@ -23,8 +23,8 @@ public class UserRoleServiceImpl implements UserRoleService {
         long roleId = userRole.getRole().getId();
 
         userRoleRepository.findByUserIdAndRoleId(userId, roleId)
-                .ifPresent(ur -> { 
-                    throw new IllegalStateException("Role already assigned to this user"); 
+                .ifPresent(ur -> {
+                    throw new IllegalStateException("Role already assigned to this user");
                 });
 
         return userRoleRepository.save(userRole);
@@ -44,6 +44,15 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     public List<UserRole> getUsersByRoleId(long roleId) {
         return userRoleRepository.findByRoleId(roleId);
+    }
+
+    @Override
+    public UserRole updateUserRole(long id, UserRole userRole) {
+        UserRole existing = userRoleRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("UserRole not found with id: " + id));
+        existing.setUser(userRole.getUser());
+        existing.setRole(userRole.getRole());
+        return userRoleRepository.save(existing);
     }
 
     @Override
