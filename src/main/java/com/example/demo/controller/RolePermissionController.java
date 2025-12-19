@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.RolePermission;
-import com.example.demo.dto.ApiResponse;
 import com.example.demo.service.RolePermissionService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -32,8 +31,8 @@ public class RolePermissionController {
     }
 
     @DeleteMapping("/{id}")
-    public ApiResponse revokePermission(@PathVariable long id) {
+    public String revokePermission(@PathVariable long id) {
         rolePermissionService.revokePermission(id);
-        return new ApiResponse(true, "Permission revoked successfully", null);
+        return "Permission revoked successfully";
     }
 }
