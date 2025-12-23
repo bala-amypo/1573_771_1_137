@@ -3,50 +3,56 @@ package com.example.demo.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.function.Function;
 
+@Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "portal-secret-key-123456";
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10;
+    private final String SECRET_KEY = "secret123";
 
-    /* ================= REQUIRED BY TESTS ================= */
+    // ===============================
+    // REQUIRED BY TEST CASES
+    // ===============================
 
-    public String generateToken(String email) {
+    public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
 
-    public String extractEmail(String token) {
-        return extractAllClaims(token).getSubject();
-    }
-
-    // ⚠️ TESTS EXPECT THIS NAME
     public String extractUsername(String token) {
-        return extractAllClaims(token).getSubject();
+        return extractClaim(token, Claims::getSubject);
     }
 
-    // ⚠️ TESTS EXPECT THIS METHOD
-    public boolean isTokenValid(String token) {
-        try {
-            extractAllClaims(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    /* ================= INTERNAL ================= */
+    // ===============================
+    // INTERNAL HELPERS (OK FOR TESTS)
+    // ===============================
 
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody();
+        return claimsResolver.apply(claims);
     }
 }
