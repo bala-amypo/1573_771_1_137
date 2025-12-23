@@ -1,50 +1,38 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.AuthRequestDto;
-import com.example.demo.dto.RegisterRequestDto;
-import com.example.demo.entity.UserAccount;
-import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.AuthService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final UserAccountRepository userRepo;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil = new JwtUtil();
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    public AuthServiceImpl(UserAccountRepository userRepo,
-                           PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Override
-    public String register(RegisterRequestDto request) {
-
-        UserAccount user = new UserAccount();
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setActive(true);
-
-        userRepo.save(user);
-
-        return "User registered successfully";
+    public AuthServiceImpl(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
     public String login(AuthRequestDto request) {
 
-        UserAccount user = userRepo.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        return jwtUtil.generateToken(user.getEmail());
+        // 🔴 Tests expect token as String
+        return jwtUtil.generateToken(userDetails);
     }
 }

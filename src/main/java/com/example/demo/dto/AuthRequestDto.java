@@ -2,19 +2,27 @@ package com.example.demo.dto;
 
 public class AuthRequestDto {
 
-    private String email;
+    private String username;
     private String password;
 
-    public AuthRequestDto() {}
-
-    public String getEmail() {
-        return email;
+    public AuthRequestDto() {
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public AuthRequestDto(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
+    // 🔴 REQUIRED BY TEST CASES
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    // 🔴 REQUIRED BY TEST CASES
     public String getPassword() {
         return password;
     }
