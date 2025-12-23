@@ -19,7 +19,18 @@ public class RolePermission {
 
     private LocalDateTime grantedAt;
 
-    // ===== REQUIRED BY TESTS =====
+    // ✅ REQUIRED BY JPA
+    public RolePermission() {
+    }
+
+    // ✅ REQUIRED BY SERVICE + TESTS
+    public RolePermission(Role role, Permission permission) {
+        this.role = role;
+        this.permission = permission;
+        this.grantedAt = LocalDateTime.now();
+    }
+
+    // ===== getters / setters =====
 
     public Long getId() {
         return id;
@@ -51,6 +62,8 @@ public class RolePermission {
 
     @PrePersist
     public void prePersist() {
-        this.grantedAt = LocalDateTime.now();
+        if (this.grantedAt == null) {
+            this.grantedAt = LocalDateTime.now();
+        }
     }
 }
