@@ -5,15 +5,11 @@ import java.util.List;
 
 public interface UserRoleService {
 
-    UserRole assignRoleToUser(UserRole userRole);
+    UserRole assignRole(UserRole mapping);
 
-    UserRole getUserRoleById(long id);
+    List<UserRole> getRolesForUser(Long userId);
 
-    List<UserRole> getRolesByUserId(long userId);
+    UserRole getMappingById(Long id);
 
-    List<UserRole> getUsersByRoleId(long roleId);
-
-    UserRole updateUserRole(long id, UserRole userRole);
-
-    void removeRoleFromUser(long id);
+    void removeRole(Long id);
 }
