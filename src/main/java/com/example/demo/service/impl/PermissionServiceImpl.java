@@ -1,45 +1,53 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Permission;
-import com.example.demo.exception.*;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.PermissionRepository;
 import com.example.demo.service.PermissionService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PermissionServiceImpl implements PermissionService {
 
-    private final PermissionRepository repo;
+    private final PermissionRepository repository;
 
-    public PermissionServiceImpl(PermissionRepository repo) {
-        this.repo = repo;
+    public PermissionServiceImpl(PermissionRepository repository) {
+        this.repository = repository;
     }
 
+    @Override
     public Permission createPermission(Permission permission) {
-        repo.findByPermissionKey(permission.getPermissionKey())
+        repository.findByPermissionKey(permission.getPermissionKey())
                 .ifPresent(p -> { throw new BadRequestException("Permission already exists"); });
-        return repo.save(permission);
+        return repository.save(permission);
     }
 
+    @Override
     public Permission updatePermission(Long id, Permission permission) {
         Permission existing = getPermissionById(id);
         existing.setPermissionKey(permission.getPermissionKey());
         existing.setDescription(permission.getDescription());
-        return repo.save(existing);
+        return repository.save(existing);
     }
 
+    @Override
     public Permission getPermissionById(Long id) {
-        return repo.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Permission not found"));
     }
 
+    @Override
     public List<Permission> getAllPermissions() {
-        return repo.findAll();
+        return repository.findAll();
     }
 
+    @Override
     public void deactivatePermission(Long id) {
         Permission permission = getPermissionById(id);
         permission.setActive(false);
-        repo.save(permission);
+        repository.save(permission);
     }
 }
