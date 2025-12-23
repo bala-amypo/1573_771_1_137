@@ -10,17 +10,12 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String permissionKey;
+    private String name;
+    private boolean active = true;
 
-    private String description;
+    public Permission() {}
 
-    private Boolean active = true;
-
-    public Permission() {
-    }
-
-    /* ---------- ID ---------- */
+    // ===== REQUIRED BY TESTS =====
 
     public Long getId() {
         return id;
@@ -30,35 +25,23 @@ public class Permission {
         this.id = id;
     }
 
-    /* ---------- ACTIVE (BOTH REQUIRED) ---------- */
-
-    public Boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public Boolean getActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
-    /* ---------- OTHER FIELDS ---------- */
-
-    public String getPermissionKey() {
-        return permissionKey;
+    public String getName() {
+        return name;
     }
 
-    public void setPermissionKey(String permissionKey) {
-        this.permissionKey = permissionKey;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 }

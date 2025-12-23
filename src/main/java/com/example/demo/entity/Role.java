@@ -10,16 +10,12 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String roleName;
-
-    private String description;
-
-    private Boolean active = true;
+    private String name;
+    private boolean active = true;
 
     public Role() {}
 
-    /* ---------- ID ---------- */
+    // ===== REQUIRED BY TESTS =====
 
     public Long getId() {
         return id;
@@ -29,35 +25,23 @@ public class Role {
         this.id = id;
     }
 
-    /* ---------- ACTIVE (BOTH REQUIRED) ---------- */
-
-    public Boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public Boolean getActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
-    /* ---------- OTHER FIELDS ---------- */
-
-    public String getRoleName() {
-        return roleName;
+    public String getName() {
+        return name;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 }
