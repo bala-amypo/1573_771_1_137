@@ -5,7 +5,7 @@ import com.example.demo.dto.RegisterRequestDto;
 
 public interface AuthService {
 
-    String register(RegisterRequestDto request);
+    void register(RegisterRequestDto request);
 
-    String login(AuthRequestDto request);
+    void login(AuthRequestDto request);
 }
