@@ -12,50 +12,19 @@ public class Role {
 
     private String roleName;
     private String description;
-    private boolean active = true;
+    private Boolean active = true;
 
     public Role() {}
 
-    public Role(String roleName) {
-        this.roleName = roleName;
-        this.active = true;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    // ===== getters/setters =====
+    public String getRoleName() { return roleName; }
+    public void setRoleName(String roleName) { this.roleName = roleName; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean getActive() {
-        return active;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    public Boolean isActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }
