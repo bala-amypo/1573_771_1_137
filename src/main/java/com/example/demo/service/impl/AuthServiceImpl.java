@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.AuthRequestDto;
-import com.example.demo.dto.AuthResponseDto;
 import com.example.demo.dto.RegisterRequestDto;
 import com.example.demo.entity.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
@@ -24,26 +23,20 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthResponseDto register(RegisterRequestDto request) {
-
-        if (userRepo.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
-        }
+    public String register(RegisterRequestDto request) {
 
         UserAccount user = new UserAccount();
         user.setEmail(request.getEmail());
-        user.setFullName(request.getFullName());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setActive(true);
 
         userRepo.save(user);
 
-        String token = jwtUtil.generateToken(user.getEmail());
-        return new AuthResponseDto(token);
+        return "User registered successfully";
     }
 
     @Override
-    public AuthResponseDto login(AuthRequestDto request) {
+    public String login(AuthRequestDto request) {
 
         UserAccount user = userRepo.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
@@ -52,7 +45,6 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        String token = jwtUtil.generateToken(user.getEmail());
-        return new AuthResponseDto(token);
+        return jwtUtil.generateToken(user.getEmail());
     }
 }
