@@ -19,7 +19,18 @@ public class UserRole {
 
     private LocalDateTime assignedAt;
 
-    // ===== REQUIRED BY TESTS =====
+    // ✅ REQUIRED BY JPA
+    public UserRole() {
+    }
+
+    // ✅ REQUIRED BY SERVICE + TESTS
+    public UserRole(UserAccount user, Role role) {
+        this.user = user;
+        this.role = role;
+        this.assignedAt = LocalDateTime.now();
+    }
+
+    // ===== getters / setters =====
 
     public Long getId() {
         return id;
@@ -51,6 +62,8 @@ public class UserRole {
 
     @PrePersist
     public void prePersist() {
-        this.assignedAt = LocalDateTime.now();
+        if (this.assignedAt == null) {
+            this.assignedAt = LocalDateTime.now();
+        }
     }
 }
