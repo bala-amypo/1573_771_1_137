@@ -11,76 +11,57 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    @Column(unique = true, nullable = false)
     private String email;
+
     private String fullName;
+
     private String password;
-    private boolean active = true;
+
+    private Boolean active = true;
 
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 
-    public UserAccount() {}
-
-    // ===== constructors required by services/tests =====
-    public UserAccount(String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.active = true;
+    public UserAccount() {
     }
 
-    // ===== getters/setters (REQUIRED) =====
+    public UserAccount(String email, String fullName, Boolean active) {
+        this.email = email;
+        this.fullName = fullName;
+        this.active = active;
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getFullName() {
         return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean getActive() {
+    public Boolean getActive() {
         return active;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -91,14 +72,23 @@ public class UserAccount {
         return updatedAt;
     }
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
