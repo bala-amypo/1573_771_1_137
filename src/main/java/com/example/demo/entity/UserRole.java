@@ -11,10 +11,10 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private UserAccount user;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Role role;
 
     private Instant assignedAt;
@@ -27,9 +27,11 @@ public class UserRole {
     }
 
     @PrePersist
-    public void onCreate() {
-        assignedAt = Instant.now();
+    void onAssign() {
+        this.assignedAt = Instant.now();
     }
 
-    // getters and setters
+    public Long getId() { return id; }
+    public UserAccount getUser() { return user; }
+    public Role getRole() { return role; }
 }
