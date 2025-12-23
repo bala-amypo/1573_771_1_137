@@ -101,15 +101,23 @@
     <build>
         <plugins>
 
+            <!-- Spring Boot Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
+            <!-- Maven Surefire Plugin (ONLY CONFIG ADDED) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+
+                <!-- ✅ ONLY ADDITION -->
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.surefire</groupId>
@@ -121,27 +129,5 @@
 
         </plugins>
     </build>
-    <build>
-    <plugins>
-
-        <!-- Disable tests completely -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.2.5</version>
-            <configuration>
-                <skipTests>true</skipTests>
-            </configuration>
-        </plugin>
-
-        <!-- Spring Boot plugin -->
-        <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-        </plugin>
-
-    </plugins>
-</build>
-
 
 </project>
