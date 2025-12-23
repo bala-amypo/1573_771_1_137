@@ -1,12 +1,19 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.*;
-import com.example.demo.exception.*;
-import com.example.demo.repository.*;
+import com.example.demo.entity.Role;
+import com.example.demo.entity.UserAccount;
+import com.example.demo.entity.UserRole;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.RoleRepository;
+import com.example.demo.repository.UserAccountRepository;
+import com.example.demo.repository.UserRoleRepository;
 import com.example.demo.service.UserRoleService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserRoleServiceImpl implements UserRoleService {
 
     private final UserRoleRepository userRoleRepository;
@@ -29,12 +36,11 @@ public class UserRoleServiceImpl implements UserRoleService {
         Role role = roleRepository.findById(mapping.getRole().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
 
-        if (!Boolean.TRUE.equals(user.getActive()) || !Boolean.TRUE.equals(role.getActive())) {
+        if (!user.getActive() || !role.getActive()) {
             throw new BadRequestException("Inactive user or role");
         }
 
-        UserRole newMapping = new UserRole(user, role);
-        return userRoleRepository.save(newMapping);
+        return userRoleRepository.save(new UserRole(user, role));
     }
 
     @Override
