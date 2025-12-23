@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "role_permissions")
@@ -16,15 +17,9 @@ public class RolePermission {
     @ManyToOne
     private Permission permission;
 
-    public RolePermission() {}
+    private LocalDateTime grantedAt;
 
-    // REQUIRED constructor
-    public RolePermission(Role role, Permission permission) {
-        this.role = role;
-        this.permission = permission;
-    }
-
-    // ===== getters/setters =====
+    // ===== REQUIRED BY TESTS =====
 
     public Long getId() {
         return id;
@@ -48,5 +43,14 @@ public class RolePermission {
 
     public void setPermission(Permission permission) {
         this.permission = permission;
+    }
+
+    public LocalDateTime getGrantedAt() {
+        return grantedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.grantedAt = LocalDateTime.now();
     }
 }
