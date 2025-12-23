@@ -14,11 +14,7 @@ import java.util.Collections;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil;
-
-    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
+    private final JwtUtil jwtUtil = new JwtUtil();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -26,20 +22,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        String header = request.getHeader("Authorization");
+        String authHeader = request.getHeader("Authorization");
 
-        if (header != null && header.startsWith("Bearer ")) {
-            String token = header.substring(7);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
 
-            if (jwtUtil.validateToken(token)) {
-                String email = jwtUtil.getEmail(token);
+            String token = authHeader.substring(7);
+            try {
+                String email = jwtUtil.extractEmail(token);
 
-                UsernamePasswordAuthenticationToken auth =
+                UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
-                                email, null, Collections.emptyList());
+                                email,
+                                null,
+                                Collections.emptyList()
+                        );
 
-                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                authentication.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            } catch (Exception ignored) {
+                // invalid token → no authentication set
             }
         }
 
