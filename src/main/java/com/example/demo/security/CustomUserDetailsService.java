@@ -2,34 +2,30 @@ package com.example.demo.security;
 
 import com.example.demo.entity.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import com.example.demo.repository.UserRoleRepository;
+import org.springframework.security.core.userdetails.*;
+import java.util.Collections;
 
-@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserAccountRepository repository;
+    private final UserAccountRepository userRepo;
+    private final UserRoleRepository userRoleRepo;
 
-    public CustomUserDetailsService(UserAccountRepository repository) {
-        this.repository = repository;
+    public CustomUserDetailsService(UserAccountRepository userRepo,
+                                    UserRoleRepository userRoleRepo) {
+        this.userRepo = userRepo;
+        this.userRoleRepo = userRoleRepo;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
 
-        UserAccount user = repository.findByEmail(email)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
+        UserAccount user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return User.builder()
-                .username(user.getEmail())
-                .password(user.getPassword())
-                .disabled(!user.getActive())
-                .authorities("USER")
-                .build();
+        return new User(user.getEmail(),
+                user.getPassword() == null ? "" : user.getPassword(),
+                Collections.emptyList());
     }
 }

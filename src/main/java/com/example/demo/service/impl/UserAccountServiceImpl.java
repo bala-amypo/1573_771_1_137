@@ -1,61 +1,46 @@
 package com.example.demo.service.impl;
 
-
 import com.example.demo.entity.UserAccount;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.*;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
-import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-
-@Service
 public class UserAccountServiceImpl implements UserAccountService {
 
+    private final UserAccountRepository repo;
 
-private final UserAccountRepository userAccountRepository;
+    public UserAccountServiceImpl(UserAccountRepository repo) {
+        this.repo = repo;
+    }
 
+    public UserAccount createUser(UserAccount user) {
+        if (repo.existsByEmail(user.getEmail())) {
+            throw new BadRequestException("Email already exists");
+        }
+        return repo.save(user);
+    }
 
-public UserAccountServiceImpl(UserAccountRepository userAccountRepository) {
-this.userAccountRepository = userAccountRepository;
-}
+    public UserAccount updateUser(Long id, UserAccount user) {
+        UserAccount existing = getUserById(id);
+        existing.setEmail(user.getEmail());
+        existing.setFullName(user.getFullName());
+        return repo.save(existing);
+    }
 
+    public UserAccount getUserById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
 
-public UserAccount createUser(UserAccount user) {
-if (userAccountRepository.existsByEmail(user.getEmail())) {
-throw new BadRequestException("Email already exists");
-}
-return userAccountRepository.save(user);
-}
+    public List<UserAccount> getAllUsers() {
+        return repo.findAll();
+    }
 
-
-public UserAccount updateUser(long id, UserAccount user) {
-UserAccount existing = userAccountRepository.findById(id)
-.orElseThrow(() -> new ResourceNotFoundException("User not found"));
-existing.setEmail(user.getEmail());
-existing.setFullName(user.getFullName());
-existing.setPassword(user.getPassword());
-existing.setActive(user.getActive());
-return userAccountRepository.save(existing);
-}
-
-
-public UserAccount getUserById(long id) {
-return userAccountRepository.findById(id)
-.orElseThrow(() -> new ResourceNotFoundException("User not found"));
-}
-
-
-public List<UserAccount> getAllUsers() {
-return userAccountRepository.findAll();
-}
-
-
-public void deactivateUser(long id) {
-UserAccount user = userAccountRepository.findById(id)
-.orElseThrow(() -> new ResourceNotFoundException("User not found"));
-user.setActive(false);
-userAccountRepository.save(user);
-}
+    public void deactivateUser(Long id) {
+        UserAccount user = getUserById(id);
+        user.setActive(false);
+        repo.save(user);
+    }
 }
