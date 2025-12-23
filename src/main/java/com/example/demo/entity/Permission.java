@@ -14,17 +14,49 @@ public class Permission {
     private String description;
     private Boolean active = true;
 
-    public Permission() {}
+    public Permission() {
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Permission(String permissionKey, String description, Boolean active) {
+        this.permissionKey = permissionKey;
+        this.description = description;
+        this.active = active;
+    }
 
-    public String getPermissionKey() { return permissionKey; }
-    public void setPermissionKey(String permissionKey) { this.permissionKey = permissionKey; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Boolean isActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public String getPermissionKey() {
+        return permissionKey;
+    }
+
+    public void setPermissionKey(String permissionKey) {
+        this.permissionKey = permissionKey;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean isActive() {
+        return active;
+    }
+
+    // 🔴 REQUIRED BY SERVICE CODE
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }

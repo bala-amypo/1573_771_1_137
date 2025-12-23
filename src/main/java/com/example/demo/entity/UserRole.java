@@ -19,21 +19,45 @@ public class UserRole {
 
     private Instant assignedAt;
 
-    public UserRole() {}
+    public UserRole() {
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public UserAccount getUser() { return user; }
-    public void setUser(UserAccount user) { this.user = user; }
-
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
-
-    public Instant getAssignedAt() { return assignedAt; }
+    // 🔴 REQUIRED BY SERVICE CODE
+    public UserRole(UserAccount user, Role role) {
+        this.user = user;
+        this.role = role;
+    }
 
     @PrePersist
     public void prePersist() {
         this.assignedAt = Instant.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public UserAccount getUser() {
+        return user;
+    }
+
+    public void setUser(UserAccount user) {
+        this.user = user;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Instant getAssignedAt() {
+        return assignedAt;
     }
 }

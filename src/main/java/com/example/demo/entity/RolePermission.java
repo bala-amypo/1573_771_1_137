@@ -19,21 +19,45 @@ public class RolePermission {
 
     private Instant grantedAt;
 
-    public RolePermission() {}
+    public RolePermission() {
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
-
-    public Permission getPermission() { return permission; }
-    public void setPermission(Permission permission) { this.permission = permission; }
-
-    public Instant getGrantedAt() { return grantedAt; }
+    // 🔴 REQUIRED BY SERVICE CODE
+    public RolePermission(Role role, Permission permission) {
+        this.role = role;
+        this.permission = permission;
+    }
 
     @PrePersist
     public void prePersist() {
         this.grantedAt = Instant.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Permission getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Permission permission) {
+        this.permission = permission;
+    }
+
+    public Instant getGrantedAt() {
+        return grantedAt;
     }
 }
