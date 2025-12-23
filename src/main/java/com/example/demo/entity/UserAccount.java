@@ -9,28 +9,17 @@ public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @Column(nullable = false, unique = true)
     private String email;
-
-    @Column(nullable = false)
     private String fullName;
-
-    @Column
     private String password;
-
-    @Column(nullable = false)
     private Boolean active = true;
 
-    @Column(nullable = false, updatable = false)
     private Instant createdAt;
-
-    @Column(nullable = false)
     private Instant updatedAt;
 
-    public UserAccount() {
-    }
+    public UserAccount() {}
 
     public UserAccount(String email, String fullName, Boolean active) {
         this.email = email;
@@ -39,62 +28,15 @@ public class UserAccount {
     }
 
     @PrePersist
-    void onCreate() {
-        Instant now = Instant.now();
-        this.createdAt = now;
-        this.updatedAt = now;
+    public void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
     }
 
     @PreUpdate
-    void onUpdate() {
-        this.updatedAt = Instant.now();
+    public void onUpdate() {
+        updatedAt = Instant.now();
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
+    // getters and setters
 }
