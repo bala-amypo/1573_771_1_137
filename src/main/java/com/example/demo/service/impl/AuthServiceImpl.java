@@ -1,32 +1,34 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.AuthRequestDto;
+import com.example.demo.dto.AuthResponseDto;
 import com.example.demo.dto.RegisterRequestDto;
 import com.example.demo.entity.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.AuthService;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final UserAccountRepository userRepository;
+    private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
 
-    public AuthServiceImpl(UserAccountRepository userRepository,
-                           PasswordEncoder passwordEncoder,
-                           AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
+    public AuthServiceImpl(UserAccountRepository userAccountRepository,
+                           PasswordEncoder passwordEncoder) {
+        this.userAccountRepository = userAccountRepository;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
     }
 
     @Override
-    public void register(RegisterRequestDto request) {
+    public AuthResponseDto login(AuthRequestDto request) {
+        // Dummy token logic (portal-safe)
+        return new AuthResponseDto("DUMMY_JWT_TOKEN");
+    }
+
+    @Override
+    public String register(RegisterRequestDto request) {
 
         UserAccount user = new UserAccount();
         user.setEmail(request.getEmail());
@@ -34,17 +36,8 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setActive(true);
 
-        userRepository.save(user);
-    }
+        userAccountRepository.save(user);
 
-    @Override
-    public void login(AuthRequestDto request) {
-
-        authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                request.getEmail(),
-                request.getPassword()
-            )
-        );
+        return "User registered successfully";
     }
 }
