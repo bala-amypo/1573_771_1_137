@@ -1,57 +1,54 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.*;
+import com.example.demo.dto.AuthRequestDto;
+import com.example.demo.dto.AuthResponseDto;
+import com.example.demo.dto.RegisterRequestDto;
 import com.example.demo.entity.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.security.JwtUtil;
 
-import org.springframework.security.authentication.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthenticationManager authManager;
-    private final JwtUtil jwtUtil;
-    private final UserAccountRepository userRepo;
-    private final PasswordEncoder encoder;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    public AuthController(AuthenticationManager authManager,
-                          JwtUtil jwtUtil,
-                          UserAccountRepository userRepo,
-                          PasswordEncoder encoder) {
-        this.authManager = authManager;
-        this.jwtUtil = jwtUtil;
-        this.userRepo = userRepo;
-        this.encoder = encoder;
-    }
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserAccountRepository userAccountRepository;
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request) {
-
-        if (userRepo.findByEmail(request.getEmail()).isPresent()) {
-            return "Email already exists";
-        }
-
+    public String register(@RequestBody RegisterRequestDto request) {
         UserAccount user = new UserAccount();
         user.setEmail(request.getEmail());
         user.setFullName(request.getFullName());
-        user.setPassword(encoder.encode(request.getPassword()));
+        user.setPassword(request.getPassword());
+        user.setActive(true);
 
-        userRepo.save(user);
+        userAccountRepository.save(user);
         return "User registered successfully";
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest request) {
+    public AuthResponseDto login(@RequestBody AuthRequestDto request) {
 
-        Authentication auth = authManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(), request.getPassword()));
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
 
         String token = jwtUtil.generateToken(request.getEmail());
-        return new AuthResponse(token);
+        return new AuthResponseDto(token);
     }
 }
