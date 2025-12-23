@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
@@ -11,36 +12,33 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET =
-            "mysecretkeymysecretkeymysecretkeymysecretkey";
-
-    private static final long EXPIRATION = 1000 * 60 * 60;
-
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
-    }
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(getSigningKey())
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day
+                .signWith(key)
                 .compact();
     }
 
-    public boolean validateToken(String token) {
-        extractAllClaims(token);
-        return true;
-    }
-
     public String extractEmail(String token) {
-        return extractAllClaims(token).getSubject();
+        return getClaims(token).getSubject();
     }
 
-    private Claims extractAllClaims(String token) {
+    public boolean validateToken(String token) {
+        try {
+            getClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private Claims getClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
