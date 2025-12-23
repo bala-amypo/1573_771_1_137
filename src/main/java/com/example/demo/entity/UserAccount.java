@@ -13,6 +13,8 @@ public class UserAccount {
 
     private String username;
     private String email;
+    private String fullName;
+    private String password;
     private boolean active = true;
 
     private LocalDateTime createdAt;
@@ -20,7 +22,14 @@ public class UserAccount {
 
     public UserAccount() {}
 
-    // ===== REQUIRED BY TESTS =====
+    // ===== constructors required by services/tests =====
+    public UserAccount(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.active = true;
+    }
+
+    // ===== getters/setters (REQUIRED) =====
 
     public Long getId() {
         return id;
@@ -28,18 +37,6 @@ public class UserAccount {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public boolean getActive() {
-        return active;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public String getUsername() {
@@ -56,6 +53,34 @@ public class UserAccount {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean getActive() {
+        return active;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -10,12 +10,18 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String permissionKey;
+    private String description;
     private boolean active = true;
 
     public Permission() {}
 
-    // ===== REQUIRED BY TESTS =====
+    public Permission(String permissionKey) {
+        this.permissionKey = permissionKey;
+        this.active = true;
+    }
+
+    // ===== getters/setters =====
 
     public Long getId() {
         return id;
@@ -23,6 +29,22 @@ public class Permission {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPermissionKey() {
+        return permissionKey;
+    }
+
+    public void setPermissionKey(String permissionKey) {
+        this.permissionKey = permissionKey;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public boolean getActive() {
@@ -35,13 +57,5 @@ public class Permission {
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

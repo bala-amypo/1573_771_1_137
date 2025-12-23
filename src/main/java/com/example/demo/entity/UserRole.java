@@ -18,7 +18,13 @@ public class UserRole {
 
     public UserRole() {}
 
-    // ===== REQUIRED BY TESTS =====
+    // REQUIRED constructor
+    public UserRole(UserAccount user, Role role) {
+        this.user = user;
+        this.role = role;
+    }
+
+    // ===== getters/setters =====
 
     public Long getId() {
         return id;

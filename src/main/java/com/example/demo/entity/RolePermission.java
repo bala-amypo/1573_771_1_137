@@ -18,7 +18,13 @@ public class RolePermission {
 
     public RolePermission() {}
 
-    // ===== REQUIRED BY TESTS =====
+    // REQUIRED constructor
+    public RolePermission(Role role, Permission permission) {
+        this.role = role;
+        this.permission = permission;
+    }
+
+    // ===== getters/setters =====
 
     public Long getId() {
         return id;
