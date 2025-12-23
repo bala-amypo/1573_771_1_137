@@ -5,8 +5,6 @@ public class AuthRequestDto {
     private String username;
     private String password;
 
-    public AuthRequestDto() {}
-
     public String getUsername() {
         return username;
     }
