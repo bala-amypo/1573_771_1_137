@@ -11,10 +11,10 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private UserAccount user;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Role role;
 
     private Instant assignedAt;
@@ -26,12 +26,38 @@ public class UserRole {
         this.role = role;
     }
 
-    @PrePersist
-    void onAssign() {
-        this.assignedAt = Instant.now();
+    /* ---------- REQUIRED BY TESTS ---------- */
+
+    public Long getId() {
+        return id;
     }
 
-    public Long getId() { return id; }
-    public UserAccount getUser() { return user; }
-    public Role getRole() { return role; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public UserAccount getUser() {
+        return user;
+    }
+
+    public void setUser(UserAccount user) {
+        this.user = user;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Instant getAssignedAt() {
+        return assignedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.assignedAt = Instant.now();
+    }
 }

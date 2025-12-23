@@ -3,38 +3,38 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(
-    name = "permissions",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "permissionKey")
-    }
-)
+@Table(name = "permissions")
 public class Permission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(unique = true)
     private String permissionKey;
 
     private String description;
 
     private Boolean active = true;
 
-    public Permission() {
-    }
+    public Permission() {}
 
-    public Permission(String permissionKey, String description, Boolean active) {
-        this.permissionKey = permissionKey;
-        this.description = description;
-        this.active = active != null ? active : true;
-    }
-
-    /* ================= GETTERS & SETTERS ================= */
+    /* ---------- REQUIRED BY TESTS ---------- */
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean isActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public String getPermissionKey() {
@@ -51,13 +51,5 @@ public class Permission {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 }

@@ -11,10 +11,10 @@ public class RolePermission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Role role;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Permission permission;
 
     private Instant grantedAt;
@@ -26,13 +26,38 @@ public class RolePermission {
         this.permission = permission;
     }
 
-    @PrePersist
-    void onGrant() {
-        this.grantedAt = Instant.now();
+    /* ---------- REQUIRED BY TESTS ---------- */
+
+    public Long getId() {
+        return id;
     }
 
-    // getters
-    public Long getId() { return id; }
-    public Role getRole() { return role; }
-    public Permission getPermission() { return permission; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Permission getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Permission permission) {
+        this.permission = permission;
+    }
+
+    public Instant getGrantedAt() {
+        return grantedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.grantedAt = Instant.now();
+    }
 }
