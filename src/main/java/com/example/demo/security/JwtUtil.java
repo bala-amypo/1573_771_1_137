@@ -1,51 +1,42 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
 
 public class JwtUtil {
 
-    private static final String SECRET = "THIS_IS_A_VERY_SECURE_SECRET_KEY_32BYTES!";
-    private static final long EXPIRATION = 3600000; // 1 hour
+    private static final long EXPIRATION_TIME = 3600000; // 1 hour
+    private static final Key KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
-    }
-
-    public String generateToken(Map<String, Object> claims, String subject) {
+    public String generateToken(String email) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(KEY)
                 .compact();
     }
 
-    public String getUsername(String token) {
-        return getClaims(token).getSubject();
-    }
-
-    public Claims getClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+    public String getEmail(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(KEY)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+
+        return claims.getSubject();
     }
 
-    public long getExpirationMillis() {
-        return EXPIRATION;
-    }
-
-    public boolean isTokenValid(String token, String username) {
+    public boolean validateToken(String token) {
         try {
-            return getUsername(token).equals(username)
-                    && getClaims(token).getExpiration().after(new Date());
-        } catch (JwtException e) {
+            Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }
