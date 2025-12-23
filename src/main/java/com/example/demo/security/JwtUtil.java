@@ -9,7 +9,9 @@ import java.util.Date;
 public class JwtUtil {
 
     private static final String SECRET_KEY = "portal-secret-key-123456";
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10;
+
+    /* ================= REQUIRED BY TESTS ================= */
 
     public String generateToken(String email) {
         return Jwts.builder()
@@ -21,10 +23,30 @@ public class JwtUtil {
     }
 
     public String extractEmail(String token) {
-        Claims claims = Jwts.parser()
+        return extractAllClaims(token).getSubject();
+    }
+
+    // ⚠️ TESTS EXPECT THIS NAME
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    // ⚠️ TESTS EXPECT THIS METHOD
+    public boolean isTokenValid(String token) {
+        try {
+            extractAllClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /* ================= INTERNAL ================= */
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody();
-        return claims.getSubject();
     }
 }
