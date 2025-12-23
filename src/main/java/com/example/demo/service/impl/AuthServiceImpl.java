@@ -30,7 +30,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String register(RegisterRequestDto request) {
-        // portal expects method to exist, logic not required
         return "REGISTER_SUCCESS";
     }
 }
