@@ -9,43 +9,48 @@ import java.util.List;
 
 public class UserRoleServiceImpl implements UserRoleService {
 
-    private final UserRoleRepository urRepo;
-    private final UserAccountRepository userRepo;
-    private final RoleRepository roleRepo;
+    private final UserRoleRepository userRoleRepository;
+    private final UserAccountRepository userAccountRepository;
+    private final RoleRepository roleRepository;
 
-    public UserRoleServiceImpl(UserRoleRepository urRepo,
-                               UserAccountRepository userRepo,
-                               RoleRepository roleRepo) {
-        this.urRepo = urRepo;
-        this.userRepo = userRepo;
-        this.roleRepo = roleRepo;
+    public UserRoleServiceImpl(UserRoleRepository userRoleRepository,
+                               UserAccountRepository userAccountRepository,
+                               RoleRepository roleRepository) {
+        this.userRoleRepository = userRoleRepository;
+        this.userAccountRepository = userAccountRepository;
+        this.roleRepository = roleRepository;
     }
 
+    @Override
     public UserRole assignRole(UserRole mapping) {
-        UserAccount user = userRepo.findById(mapping.getUser().getId())
+        UserAccount user = userAccountRepository.findById(mapping.getUser().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        Role role = roleRepo.findById(mapping.getRole().getId())
+
+        Role role = roleRepository.findById(mapping.getRole().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
 
-        if (!user.getActive() || !role.getActive()) {
+        if (!Boolean.TRUE.equals(user.getActive()) || !Boolean.TRUE.equals(role.getActive())) {
             throw new BadRequestException("Inactive user or role");
         }
 
-        mapping = new UserRole(user, role);
-        return urRepo.save(mapping);
+        UserRole newMapping = new UserRole(user, role);
+        return userRoleRepository.save(newMapping);
     }
 
+    @Override
     public List<UserRole> getRolesForUser(Long userId) {
-        return urRepo.findByUser_Id(userId);
+        return userRoleRepository.findByUser_Id(userId);
     }
 
+    @Override
     public UserRole getMappingById(Long id) {
-        return urRepo.findById(id)
+        return userRoleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Mapping not found"));
     }
 
+    @Override
     public void removeRole(Long id) {
-        getMappingById(id);
-        urRepo.deleteById(id);
+        UserRole mapping = getMappingById(id);
+        userRoleRepository.delete(mapping);
     }
 }

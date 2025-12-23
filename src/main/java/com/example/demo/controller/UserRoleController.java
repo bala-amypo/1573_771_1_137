@@ -17,8 +17,8 @@ public class UserRoleController {
     }
 
     @PostMapping
-    public UserRole assign(@RequestBody UserRole ur) {
-        return service.assignRole(ur);
+    public UserRole assign(@RequestBody UserRole userRole) {
+        return service.assignRole(userRole);
     }
 
     @GetMapping("/user/{userId}")
