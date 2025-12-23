@@ -17,9 +17,10 @@ public class Permission {
 
     private Boolean active = true;
 
-    public Permission() {}
+    public Permission() {
+    }
 
-    /* ---------- REQUIRED BY TESTS ---------- */
+    /* ---------- ID ---------- */
 
     public Long getId() {
         return id;
@@ -29,13 +30,21 @@ public class Permission {
         this.id = id;
     }
 
+    /* ---------- ACTIVE (BOTH REQUIRED) ---------- */
+
     public Boolean isActive() {
+        return active;
+    }
+
+    public Boolean getActive() {
         return active;
     }
 
     public void setActive(Boolean active) {
         this.active = active;
     }
+
+    /* ---------- OTHER FIELDS ---------- */
 
     public String getPermissionKey() {
         return permissionKey;

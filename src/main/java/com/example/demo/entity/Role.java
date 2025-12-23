@@ -19,7 +19,7 @@ public class Role {
 
     public Role() {}
 
-    /* ---------- REQUIRED BY TESTS ---------- */
+    /* ---------- ID ---------- */
 
     public Long getId() {
         return id;
@@ -29,13 +29,21 @@ public class Role {
         this.id = id;
     }
 
+    /* ---------- ACTIVE (BOTH REQUIRED) ---------- */
+
     public Boolean isActive() {
+        return active;
+    }
+
+    public Boolean getActive() {
         return active;
     }
 
     public void setActive(Boolean active) {
         this.active = active;
     }
+
+    /* ---------- OTHER FIELDS ---------- */
 
     public String getRoleName() {
         return roleName;
