@@ -3,57 +3,24 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(
-    name = "permissions",
-    uniqueConstraints = @UniqueConstraint(columnNames = "permission_key")
-)
+@Table(name = "permissions", uniqueConstraints = @UniqueConstraint(columnNames = "permissionKey"))
 public class Permission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @Column(name = "permission_key", nullable = false, unique = true)
     private String permissionKey;
-
-    @Column(nullable = false)
     private String description;
-
-    @Column(nullable = false)
     private Boolean active = true;
 
-    public Permission() {
-    }
+    public Permission() {}
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getPermissionKey() {
-        return permissionKey;
-    }
-
-    public void setPermissionKey(String permissionKey) {
+    public Permission(String permissionKey, String description, Boolean active) {
         this.permissionKey = permissionKey;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
+        this.active = active != null ? active : true;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+    // getters and setters
 }

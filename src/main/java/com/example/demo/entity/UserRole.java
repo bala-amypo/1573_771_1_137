@@ -1,47 +1,35 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
-@Table(
-    name = "user_roles",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "role_id"})
-    }
-)
+@Table(name = "user_roles")
 public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
+    @ManyToOne
     private UserAccount user;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "role_id")
+    @ManyToOne
     private Role role;
 
-    @Column(nullable = false)
-    private LocalDateTime assignedAt;
+    private Instant assignedAt;
+
+    public UserRole() {}
+
+    public UserRole(UserAccount user, Role role) {
+        this.user = user;
+        this.role = role;
+    }
 
     @PrePersist
     public void onCreate() {
-        this.assignedAt = LocalDateTime.now();
+        assignedAt = Instant.now();
     }
 
-    // ===== Getters & Setters =====
-    public long getId() { return id; }
-    public void setId(long id) { this.id = id; }
-
-    public UserAccount getUser() { return user; }
-    public void setUser(UserAccount user) { this.user = user; }
-
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
-
-    public LocalDateTime getAssignedAt() { return assignedAt; }
-    public void setAssignedAt(LocalDateTime assignedAt) { this.assignedAt = assignedAt; }
+    // getters and setters
 }
