@@ -4,6 +4,7 @@ import com.example.demo.dto.*;
 import com.example.demo.entity.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.security.JwtUtil;
+
 import org.springframework.security.authentication.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -13,46 +14,44 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthenticationManager authManager;
+    private final JwtUtil jwtUtil;
     private final UserAccountRepository userRepo;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder encoder;
 
     public AuthController(AuthenticationManager authManager,
+                          JwtUtil jwtUtil,
                           UserAccountRepository userRepo,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder encoder) {
         this.authManager = authManager;
+        this.jwtUtil = jwtUtil;
         this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
+        this.encoder = encoder;
     }
 
-    // REGISTER
     @PostMapping("/register")
     public String register(@RequestBody RegisterRequest request) {
+
+        if (userRepo.findByEmail(request.getEmail()).isPresent()) {
+            return "Email already exists";
+        }
 
         UserAccount user = new UserAccount();
         user.setEmail(request.getEmail());
         user.setFullName(request.getFullName());
-        user.setPassword(
-                passwordEncoder.encode(request.getPassword()));
-        user.setActive(true);
+        user.setPassword(encoder.encode(request.getPassword()));
 
         userRepo.save(user);
         return "User registered successfully";
     }
 
-    // LOGIN
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
 
-        Authentication auth =
+        Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword());
+                        request.getEmail(), request.getPassword()));
 
-        authManager.authenticate(auth);
-
-        String token =
-                JwtUtil.generateToken(request.getEmail());
-
+        String token = jwtUtil.generateToken(request.getEmail());
         return new AuthResponse(token);
     }
 }
