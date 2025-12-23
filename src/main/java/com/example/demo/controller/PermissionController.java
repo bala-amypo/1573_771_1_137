@@ -1,59 +1,43 @@
 package com.example.demo.controller;
 
-
 import com.example.demo.entity.Permission;
 import com.example.demo.service.PermissionService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/permissions")
-@Tag(name = "Permission Management")
 public class PermissionController {
 
+    private final PermissionService service;
 
-private final PermissionService permissionService;
+    public PermissionController(PermissionService service) {
+        this.service = service;
+    }
 
+    @PostMapping
+    public Permission create(@RequestBody Permission permission) {
+        return service.createPermission(permission);
+    }
 
-public PermissionController(PermissionService permissionService) {
-this.permissionService = permissionService;
-}
+    @PutMapping("/{id}")
+    public Permission update(@PathVariable Long id, @RequestBody Permission permission) {
+        return service.updatePermission(id, permission);
+    }
 
+    @GetMapping("/{id}")
+    public Permission get(@PathVariable Long id) {
+        return service.getPermissionById(id);
+    }
 
-@PostMapping
-@Operation(summary = "Create permission")
-public Permission createPermission(@RequestBody Permission permission) {
-return permissionService.createPermission(permission);
-}
+    @GetMapping
+    public List<Permission> getAll() {
+        return service.getAllPermissions();
+    }
 
-
-@PutMapping("/{id}")
-@Operation(summary = "Update permission")
-public Permission updatePermission(@PathVariable long id, @RequestBody Permission permission) {
-return permissionService.updatePermission(id, permission);
-}
-
-
-@GetMapping("/{id}")
-@Operation(summary = "Get permission by id")
-public Permission getPermission(@PathVariable long id) {
-return permissionService.getPermissionById(id);
-}
-
-
-@GetMapping
-@Operation(summary = "Get all permissions")
-public List<Permission> getAllPermissions() {
-return permissionService.getAllPermissions();
-}
-
-
-@PutMapping("/{id}/deactivate")
-@Operation(summary = "Deactivate permission")
-public void deactivatePermission(@PathVariable long id) {
-permissionService.deactivatePermission(id);
-}
+    @PutMapping("/{id}/deactivate")
+    public void deactivate(@PathVariable Long id) {
+        service.deactivatePermission(id);
+    }
 }

@@ -1,61 +1,51 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.Role;
-import com.example.demo.entity.Permission;
-import com.example.demo.entity.RolePermission;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.RolePermissionRepository;
-import com.example.demo.repository.RoleRepository;
-import com.example.demo.repository.PermissionRepository;
+import com.example.demo.entity.*;
+import com.example.demo.exception.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.RolePermissionService;
-import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-@Service
 public class RolePermissionServiceImpl implements RolePermissionService {
 
-    private final RolePermissionRepository rolePermissionRepository;
-    private final RoleRepository roleRepository;
-    private final PermissionRepository permissionRepository;
+    private final RolePermissionRepository rpRepo;
+    private final RoleRepository roleRepo;
+    private final PermissionRepository permRepo;
 
-    public RolePermissionServiceImpl(RolePermissionRepository rolePermissionRepository,
-                                     RoleRepository roleRepository,
-                                     PermissionRepository permissionRepository) {
-        this.rolePermissionRepository = rolePermissionRepository;
-        this.roleRepository = roleRepository;
-        this.permissionRepository = permissionRepository;
+    public RolePermissionServiceImpl(RolePermissionRepository rpRepo,
+                                     RoleRepository roleRepo,
+                                     PermissionRepository permRepo) {
+        this.rpRepo = rpRepo;
+        this.roleRepo = roleRepo;
+        this.permRepo = permRepo;
     }
 
-    @Override
     public RolePermission grantPermission(RolePermission mapping) {
-        Role role = roleRepository.findById(mapping.getRole().getId())
-                .orElseThrow(() -> new BadRequestException("Role not found or inactive"));
-        Permission permission = permissionRepository.findById(mapping.getPermission().getId())
-                .orElseThrow(() -> new BadRequestException("Permission not found or inactive"));
+        Role role = roleRepo.findById(mapping.getRole().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+        Permission permission = permRepo.findById(mapping.getPermission().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Permission not found"));
+
         if (!role.getActive() || !permission.getActive()) {
-            throw new BadRequestException("Role or Permission is inactive");
+            throw new BadRequestException("Inactive role or permission");
         }
-        mapping.setRole(role);
-        mapping.setPermission(permission);
-        return rolePermissionRepository.save(mapping);
+
+        mapping = new RolePermission(role, permission);
+        return rpRepo.save(mapping);
     }
 
-    @Override
-    public List<RolePermission> getPermissionsForRole(long roleId) {
-        return rolePermissionRepository.findByRole_Id(roleId);
+    public List<RolePermission> getPermissionsForRole(Long roleId) {
+        return rpRepo.findByRole_Id(roleId);
     }
 
-    @Override
-    public RolePermission getMappingById(long id) {
-        return rolePermissionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("RolePermission mapping not found"));
+    public RolePermission getMappingById(Long id) {
+        return rpRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Mapping not found"));
     }
 
-    @Override
-    public void revokePermission(long mappingId) {
-        RolePermission mapping = rolePermissionRepository.findById(mappingId)
-                .orElseThrow(() -> new ResourceNotFoundException("RolePermission mapping not found"));
-        rolePermissionRepository.delete(mapping);
+    public void revokePermission(Long id) {
+        getMappingById(id);
+        rpRepo.deleteById(id);
     }
 }

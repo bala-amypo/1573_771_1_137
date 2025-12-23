@@ -10,46 +10,29 @@ import java.util.List;
 @RequestMapping("/api/user-roles")
 public class UserRoleController {
 
-    private final UserRoleService userRoleService;
+    private final UserRoleService service;
 
-    public UserRoleController(UserRoleService userRoleService) {
-        this.userRoleService = userRoleService;
+    public UserRoleController(UserRoleService service) {
+        this.service = service;
     }
 
-    // Assign role to user
     @PostMapping
-    public UserRole assignRoleToUser(@RequestBody UserRole userRole) {
-        return userRoleService.assignRoleToUser(userRole);
+    public UserRole assign(@RequestBody UserRole ur) {
+        return service.assignRole(ur);
     }
 
-    // Update existing UserRole
-    @PutMapping("/{id}")
-    public UserRole updateUserRole(@PathVariable long id, @RequestBody UserRole userRole) {
-        return userRoleService.updateUserRole(id, userRole);
-    }
-
-    // Get user-role by ID
-    @GetMapping("/{id}")
-    public UserRole getUserRoleById(@PathVariable long id) {
-        return userRoleService.getUserRoleById(id);
-    }
-
-    // Get all roles of a user
     @GetMapping("/user/{userId}")
-    public List<UserRole> getRolesByUser(@PathVariable long userId) {
-        return userRoleService.getRolesByUserId(userId);
+    public List<UserRole> getByUser(@PathVariable Long userId) {
+        return service.getRolesForUser(userId);
     }
 
-    // Get all users of a role
-    @GetMapping("/role/{roleId}")
-    public List<UserRole> getUsersByRole(@PathVariable long roleId) {
-        return userRoleService.getUsersByRoleId(roleId);
+    @GetMapping("/{id}")
+    public UserRole get(@PathVariable Long id) {
+        return service.getMappingById(id);
     }
 
-    // Remove role from user
     @DeleteMapping("/{id}")
-    public String removeRoleFromUser(@PathVariable long id) {
-        userRoleService.removeRoleFromUser(id);
-        return "Role removed from user successfully";
+    public void remove(@PathVariable Long id) {
+        service.removeRole(id);
     }
 }
