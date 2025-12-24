@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_accounts")
+@Table(name = "user_account")
 public class UserAccount {
 
     @Id
@@ -12,17 +12,18 @@ public class UserAccount {
     private Long id;
 
     private String email;
-
     private String fullName;
-
     private String password;
-
     private Boolean active = true;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // ===== REQUIRED by TESTS =====
+    // ===== REQUIRED GETTERS / SETTERS =====
+
+    public Long getId() {
+        return id;
+    }
 
     public String getEmail() {
         return email;
@@ -44,7 +45,6 @@ public class UserAccount {
         return active;
     }
 
-    // Tests also call isActive()
     public boolean isActive() {
         return Boolean.TRUE.equals(active);
     }
@@ -53,7 +53,7 @@ public class UserAccount {
         this.active = active;
     }
 
-    // 🔴 REQUIRED PASSWORD METHODS
+    // 🔴 REQUIRED BY TESTS
     public String getPassword() {
         return password;
     }
@@ -62,30 +62,16 @@ public class UserAccount {
         this.password = password;
     }
 
-    // ===== JPA LIFECYCLE METHODS (TESTS CALL THESE) =====
-
+    // 🔴 REQUIRED BY TESTS
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
+    // 🔴 REQUIRED BY TESTS
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
-    }
-
-    // ===== OPTIONAL BUT SAFE =====
-
-    public Long getId() {
-        return id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
     }
 }
