@@ -1,7 +1,13 @@
-package com.example.demo.service;
+package com.example.demo.dto;
 
-import com.example.demo.dto.AuthRequestDto;
+public class AuthRequestDto {
 
-public interface AuthService {
-    String login(AuthRequestDto request);
+    private String username;
+    private String password;
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 }
