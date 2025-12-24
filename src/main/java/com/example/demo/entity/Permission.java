@@ -21,23 +21,7 @@ public class Permission {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    /* ===== Lifecycle ===== */
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-        if (this.active == null) {
-            this.active = true;
-        }
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    /* ===== Getters ===== */
+    /* ================= REQUIRED BY TESTS ================= */
 
     public Long getId() {
         return id;
@@ -59,21 +43,28 @@ public class Permission {
         return Boolean.TRUE.equals(active);
     }
 
-    /* ===== Setters ===== */
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setPermissionKey(String permissionKey) {
-        this.permissionKey = permissionKey;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    /* ================= JPA HOOKS ================= */
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }
