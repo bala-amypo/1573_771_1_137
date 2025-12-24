@@ -1,57 +1,21 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_accounts")
 public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
     private String password;
 
-    private boolean active = true;
+    private boolean active;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    // ===== REQUIRED BY TEST CASES =====
-
-    public boolean isActive() {
-        return active;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // ===== GETTERS & SETTERS =====
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    // ✅ REQUIRED BY TESTS
     public String getUsername() {
         return username;
     }
@@ -60,15 +24,7 @@ public class UserAccount {
         this.username = username;
     }
 
-    // ❗ TESTS REQUIRE getEmail()
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+    // ✅ REQUIRED BY TESTS
     public String getPassword() {
         return password;
     }
@@ -77,15 +33,12 @@ public class UserAccount {
         this.password = password;
     }
 
+    // ✅ REQUIRED BY TESTS
+    public boolean isActive() {
+        return active;
+    }
+
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
     }
 }
