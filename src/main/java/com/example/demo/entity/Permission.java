@@ -1,24 +1,36 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "permissions")
 public class Permission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
     private String permissionKey;
-
     private String description;
+    private boolean active;
 
-    private Boolean active = true;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    /* ================= GETTERS / SETTERS ================= */
+    // ✅ REQUIRED BY TESTS
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 
+    // ✅ REQUIRED BY TESTS
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    // ===== GETTERS & SETTERS =====
     public Long getId() {
         return id;
     }
@@ -27,7 +39,6 @@ public class Permission {
         this.id = id;
     }
 
-    // ✅ REQUIRED BY SERVICES
     public String getPermissionKey() {
         return permissionKey;
     }
@@ -36,7 +47,6 @@ public class Permission {
         this.permissionKey = permissionKey;
     }
 
-    // ✅ REQUIRED BY SERVICES
     public String getDescription() {
         return description;
     }
@@ -45,16 +55,19 @@ public class Permission {
         this.description = description;
     }
 
-    // ===== ACTIVE FLAG (BOTH NAMES REQUIRED) =====
-    public Boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
