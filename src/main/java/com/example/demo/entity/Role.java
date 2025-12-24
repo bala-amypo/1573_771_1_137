@@ -2,8 +2,6 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -17,21 +15,11 @@ public class Role {
 
     private String description;
 
-    private Boolean active = true;
+    private boolean active = true;
 
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
-
-    @ManyToMany(mappedBy = "roles")
-    private Set<UserAccount> users = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "role_permissions",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
-    private Set<Permission> permissions = new HashSet<>();
 
     /* ================= REQUIRED BY TESTS ================= */
 
@@ -39,7 +27,7 @@ public class Role {
         return id;
     }
 
-    public void setId(Long id) {           // TESTS CALL setId()
+    public void setId(Long id) {            // ✅ REQUIRED
         this.id = id;
     }
 
@@ -47,7 +35,7 @@ public class Role {
         return roleName;
     }
 
-    public void setRoleName(String roleName) { // TESTS CALL setRoleName()
+    public void setRoleName(String roleName) { // ✅ REQUIRED
         this.roleName = roleName;
     }
 
@@ -55,27 +43,31 @@ public class Role {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description) { // ✅ REQUIRED
         this.description = description;
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public boolean isActive() {             // TESTS CALL isActive()
-        return Boolean.TRUE.equals(active);
+    public boolean isActive() {             // ✅ REQUIRED
+        return active;
     }
 
-    public void setActive(boolean active) { // TESTS CALL setActive()
+    public void setActive(boolean active) { // ✅ REQUIRED
         this.active = active;
     }
 
-    public Set<Permission> getPermissions() {
-        return permissions;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    /* ================= LIFECYCLE (MANDATORY) ================= */
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    /* ================= JPA LIFECYCLE ================= */
 
     @PrePersist
     public void prePersist() {

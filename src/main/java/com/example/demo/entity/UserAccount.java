@@ -2,8 +2,6 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "user_accounts")
@@ -13,26 +11,17 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
     private String email;
 
     private String password;
 
     private String fullName;
 
-    private Boolean active = true;
+    private boolean active = true;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
 
     /* ================= REQUIRED BY TESTS ================= */
 
@@ -40,7 +29,7 @@ public class UserAccount {
         return id;
     }
 
-    public void setId(Long id) {          // TESTS CALL setId()
+    public void setId(Long id) {          // ✅ REQUIRED
         this.id = id;
     }
 
@@ -48,7 +37,7 @@ public class UserAccount {
         return email;
     }
 
-    public void setEmail(String email) {  // TESTS CALL setEmail()
+    public void setEmail(String email) {  // ✅ REQUIRED
         this.email = email;
     }
 
@@ -56,7 +45,7 @@ public class UserAccount {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password) { // ✅ REQUIRED
         this.password = password;
     }
 
@@ -64,39 +53,31 @@ public class UserAccount {
         return fullName;
     }
 
-    public void setFullName(String fullName) { // TESTS CALL setFullName()
+    public void setFullName(String fullName) { // ✅ REQUIRED
         this.fullName = fullName;
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public boolean isActive() {            // TESTS CALL isActive()
-        return Boolean.TRUE.equals(active);
+    public boolean isActive() {            // ✅ REQUIRED (TESTS CALL isActive)
+        return active;
     }
 
-    public void setActive(boolean active) { // TESTS CALL setActive()
+    public void setActive(boolean active) { // ✅ REQUIRED
         this.active = active;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDateTime getCreatedAt() {  // ✅ REQUIRED
         return createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {  // ✅ REQUIRED
         return updatedAt;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    /* ================= LIFECYCLE (MANDATORY) ================= */
+    /* ================= JPA LIFECYCLE ================= */
 
     @PrePersist
     public void prePersist() {

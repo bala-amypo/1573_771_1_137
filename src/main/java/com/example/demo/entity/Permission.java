@@ -15,9 +15,10 @@ public class Permission {
 
     private String description;
 
-    private Boolean active = true;
+    private boolean active = true;
 
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 
     /* ================= REQUIRED BY TESTS ================= */
@@ -26,7 +27,7 @@ public class Permission {
         return id;
     }
 
-    public void setId(Long id) {            // TESTS CALL setId()
+    public void setId(Long id) {               // ✅ REQUIRED
         this.id = id;
     }
 
@@ -34,7 +35,7 @@ public class Permission {
         return permissionKey;
     }
 
-    public void setPermissionKey(String permissionKey) { // TESTS CALL setPermissionKey()
+    public void setPermissionKey(String permissionKey) { // ✅ REQUIRED
         this.permissionKey = permissionKey;
     }
 
@@ -42,32 +43,25 @@ public class Permission {
         return description;
     }
 
-    public void setDescription(String description) { // TESTS CALL setDescription()
+    public void setDescription(String description) {     // ✅ REQUIRED
         this.description = description;
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public boolean isActive() {             // TESTS CALL isActive()
-        return Boolean.TRUE.equals(active);
+    public boolean isActive() {                // ✅ REQUIRED
+        return active;
     }
 
-    public void setActive(boolean active) { // TESTS CALL setActive()
+    public void setActive(boolean active) {    // ✅ REQUIRED
         this.active = active;
     }
 
-    /* ================= LIFECYCLE (MANDATORY) ================= */
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-}
+    public LocalDateTime getUpdatedAt() {
+        return updat
