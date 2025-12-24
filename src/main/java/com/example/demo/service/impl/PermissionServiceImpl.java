@@ -10,24 +10,39 @@ import java.util.List;
 @Service
 public class PermissionServiceImpl implements PermissionService {
 
-    private final PermissionRepository repo;
+    private final PermissionRepository repository;
 
-    public PermissionServiceImpl(PermissionRepository repo) {
-        this.repo = repo;
+    public PermissionServiceImpl(PermissionRepository repository) {
+        this.repository = repository;
     }
 
-    public Permission create(Permission p) {
-        return repo.save(p);
+    @Override
+    public Permission createPermission(Permission permission) {
+        return repository.save(permission);
     }
 
-    public List<Permission> getAll() {
-        return repo.findAll();
+    @Override
+    public Permission updatePermission(Long id, Permission permission) {
+        Permission existing = repository.findById(id).orElseThrow();
+        existing.setPermissionKey(permission.getPermissionKey());
+        existing.setDescription(permission.getDescription());
+        return repository.save(existing);
     }
 
-    public Permission update(Long id, Permission p) {
-        Permission existing = repo.findById(id).orElseThrow();
-        existing.setPermissionKey(p.getPermissionKey());
-        existing.setDescription(p.getDescription());
-        return repo.save(existing);
+    @Override
+    public Permission getPermissionById(Long id) {
+        return repository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public List<Permission> getAllPermissions() {
+        return repository.findAll();
+    }
+
+    @Override
+    public void deactivatePermission(Long id) {
+        Permission p = repository.findById(id).orElseThrow();
+        p.setActive(false);
+        repository.save(p);
     }
 }
