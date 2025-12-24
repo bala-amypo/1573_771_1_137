@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "permissions")
 public class Permission {
 
     @Id
@@ -11,18 +12,43 @@ public class Permission {
 
     private String permissionKey;
     private String description;
-    private Boolean active = true;
+    private boolean active = true;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    /* ===== REQUIRED BY TESTS ===== */
 
-    public String getPermissionKey() { return permissionKey; }
-    public void setPermissionKey(String permissionKey) { this.permissionKey = permissionKey; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Boolean getActive() { return active; }
-    public boolean isActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public String getPermissionKey() {
+        return permissionKey;
+    }
+
+    public void setPermissionKey(String permissionKey) {
+        this.permissionKey = permissionKey;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }
