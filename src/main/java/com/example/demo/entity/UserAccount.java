@@ -1,37 +1,56 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user_accounts")
 public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String password;
 
     private String fullName;
 
-    private boolean active = true;
+    private Boolean active = true;
 
-    @ManyToMany
-    private Set<Role> roles;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    /* ===================== LIFECYCLE ===================== */
 
-    // ===== REQUIRED GETTERS =====
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        if (this.active == null) {
+            this.active = true;
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    /* ===================== GETTERS ===================== */
+
     public Long getId() {
         return id;
     }
@@ -48,31 +67,41 @@ public class UserAccount {
         return fullName;
     }
 
-    public boolean getActive() {
+    public Boolean getActive() {
         return active;
     }
 
     public boolean isActive() {
-        return active;
+        return Boolean.TRUE.equals(active);
     }
 
-    // ===== REQUIRED SETTERS =====
-    public void setActive(boolean active) {
-        this.active = active;
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    /* ===================== SETTERS ===================== */
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = new Date();
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

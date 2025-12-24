@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "permissions")
@@ -16,15 +16,29 @@ public class Permission {
 
     private String description;
 
-    private boolean active = true;
+    private Boolean active = true;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    /* ===== Lifecycle ===== */
 
-    // ===== REQUIRED GETTERS =====
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        if (this.active == null) {
+            this.active = true;
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    /* ===== Getters ===== */
+
     public Long getId() {
         return id;
     }
@@ -37,15 +51,20 @@ public class Permission {
         return description;
     }
 
-    public boolean getActive() {
+    public Boolean getActive() {
         return active;
     }
 
     public boolean isActive() {
-        return active;
+        return Boolean.TRUE.equals(active);
     }
 
-    // ===== REQUIRED SETTERS =====
+    /* ===== Setters ===== */
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setPermissionKey(String permissionKey) {
         this.permissionKey = permissionKey;
     }
@@ -56,16 +75,5 @@ public class Permission {
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = new Date();
     }
 }

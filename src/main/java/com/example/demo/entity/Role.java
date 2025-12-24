@@ -1,8 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
-import java.util.Set;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "roles")
@@ -17,18 +16,29 @@ public class Role {
 
     private String description;
 
-    private boolean active = true;
+    private Boolean active = true;
 
-    @ManyToMany
-    private Set<Permission> permissions;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    /* ===== Lifecycle ===== */
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        if (this.active == null) {
+            this.active = true;
+        }
+    }
 
-    // ===== REQUIRED GETTERS =====
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    /* ===== Getters ===== */
+
     public Long getId() {
         return id;
     }
@@ -41,15 +51,20 @@ public class Role {
         return description;
     }
 
-    public boolean getActive() {
+    public Boolean getActive() {
         return active;
     }
 
     public boolean isActive() {
-        return active;
+        return Boolean.TRUE.equals(active);
     }
 
-    // ===== REQUIRED SETTERS =====
+    /* ===== Setters ===== */
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
@@ -60,16 +75,5 @@ public class Role {
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = new Date();
     }
 }
