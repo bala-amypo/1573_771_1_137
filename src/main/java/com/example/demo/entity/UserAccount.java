@@ -2,6 +2,8 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user_accounts")
@@ -11,40 +13,30 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
     private String email;
-
-    private String password;
 
     private String fullName;
 
-    private Boolean active = true;
+    // ✅ REQUIRED BY TESTS
+    private String password;
+
+    private boolean active = true;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public UserAccount() {
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // -------- GETTERS & SETTERS --------
+    // ---------- REQUIRED METHODS ----------
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getEmail() {
@@ -55,16 +47,6 @@ public class UserAccount {
         this.email = email;
     }
 
-    // ✅ REQUIRED BY SECURITY + TESTS
-    public String getPassword() {
-        return password;
-    }
-
-    // ✅ REQUIRED BY SECURITY + TESTS
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getFullName() {
         return fullName;
     }
@@ -73,19 +55,49 @@ public class UserAccount {
         this.fullName = fullName;
     }
 
-    public Boolean getActive() {
+    // ✅ REQUIRED BY TESTS
+    public String getPassword() {
+        return password;
+    }
+
+    // ✅ REQUIRED BY TESTS
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    // ✅ REQUIRED BY TESTS
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    // ✅ REQUIRED BY TESTS
+    public boolean getActive() {
+        return active;
+    }
+
+    // ✅ REQUIRED BY TESTS
+    public void setActive(boolean active) {
         this.active = active;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    // ---------- LIFECYCLE METHODS (TESTS CALL THESE) ----------
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }
