@@ -12,17 +12,14 @@ public class UserAccount {
     private Long id;
 
     private String email;
-
     private String password;
-
     private String fullName;
-
     private boolean active = true;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // ===================== REQUIRED BY TESTS =====================
+    // ===================== GETTERS =====================
 
     public Long getId() {
         return id;
@@ -30,10 +27,6 @@ public class UserAccount {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {
@@ -50,6 +43,20 @@ public class UserAccount {
 
     public boolean isActive() {
         return active;
+    }
+
+    // ===================== SETTERS =====================
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public void setActive(boolean active) {

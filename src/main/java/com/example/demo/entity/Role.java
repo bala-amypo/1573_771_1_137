@@ -12,15 +12,13 @@ public class Role {
     private Long id;
 
     private String roleName;
-
     private String description;
-
     private boolean active = true;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // ===================== REQUIRED BY TESTS =====================
+    // ===================== GETTERS =====================
 
     public Long getId() {
         return id;
@@ -40,6 +38,20 @@ public class Role {
 
     public boolean isActive() {
         return active;
+    }
+
+    // ===================== SETTERS =====================
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     // ===================== JPA LIFECYCLE =====================
