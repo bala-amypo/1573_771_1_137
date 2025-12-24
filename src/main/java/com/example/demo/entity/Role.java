@@ -3,7 +3,6 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "roles")
 public class Role {
 
     @Id
@@ -14,38 +13,16 @@ public class Role {
     private String description;
     private Boolean active = true;
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getRoleName() {
-        return roleName;
-    }
+    public String getRoleName() { return roleName; }
+    public void setRoleName(String roleName) { this.roleName = roleName; }
 
-    // 🔴 REQUIRED
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    // 🔴 REQUIRED
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public boolean isActive() {
-        return Boolean.TRUE.equals(active);
-    }
-
-    // 🔴 REQUIRED
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    public Boolean getActive() { return active; }
+    public boolean isActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }

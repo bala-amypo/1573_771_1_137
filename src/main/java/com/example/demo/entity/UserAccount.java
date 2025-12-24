@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_account")
 public class UserAccount {
 
     @Id
@@ -19,59 +18,37 @@ public class UserAccount {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // ===== REQUIRED GETTERS / SETTERS =====
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public boolean isActive() {
-        return Boolean.TRUE.equals(active);
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    // 🔴 REQUIRED BY TESTS
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    // 🔴 REQUIRED BY TESTS
+    // REQUIRED BY TESTS
     @PrePersist
     public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+        active = true;
     }
 
-    // 🔴 REQUIRED BY TESTS
     @PreUpdate
     public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
+
+    // ===== REQUIRED GETTERS / SETTERS =====
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public Boolean getActive() { return active; }
+    public boolean isActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
 }
