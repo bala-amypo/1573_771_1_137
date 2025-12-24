@@ -11,64 +11,24 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "permission_key", nullable = false, unique = true)
     private String permissionKey;
 
+    @Column(name = "description")
     private String description;
 
-    private boolean active = true;
+    @Column(name = "active")
+    private Boolean active = true;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    /* ================= REQUIRED BY TESTS ================= */
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {               // ✅ REQUIRED
-        this.id = id;
-    }
-
-    public String getPermissionKey() {
-        return permissionKey;
-    }
-
-    public void setPermissionKey(String permissionKey) { // ✅ REQUIRED
-        this.permissionKey = permissionKey;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {     // ✅ REQUIRED
-        this.description = description;
-    }
-
-    public boolean getActive() {
-        return active;
-    }
-
-    public boolean isActive() {                // ✅ REQUIRED
-        return active;
-    }
-
-    public void setActive(boolean active) {    // ✅ REQUIRED
-        this.active = active;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /* ================= JPA LIFECYCLE ================= */
-
+    // =====================
+    // JPA Lifecycle Hooks
+    // =====================
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
@@ -80,4 +40,46 @@ public class Permission {
         this.updatedAt = LocalDateTime.now();
     }
 
-} // ✅ <<< THIS CLOSING BRACE WAS MISSING
+    // =====================
+    // Getters & Setters (TEST REQUIRED)
+    // =====================
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {   // ✅ tests call setId()
+        this.id = id;
+    }
+
+    public String getPermissionKey() {
+        return permissionKey;
+    }
+
+    public void setPermissionKey(String permissionKey) {
+        this.permissionKey = permissionKey;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+}
