@@ -1,25 +1,7 @@
-package com.example.demo.dto;
+package com.example.demo.service;
 
-public class AuthRequestDto {
+import com.example.demo.dto.AuthRequestDto;
 
-    private String username;
-    private String password;
-    private String email;
-
-    public String getUsername() { return username; }
-    public String getPassword() { return password; }
-    public String getEmail() { return email; }
-
-    // ===== REQUIRED =====
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+public interface AuthService {
+    String login(AuthRequestDto request);
 }

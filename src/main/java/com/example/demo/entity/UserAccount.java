@@ -1,3 +1,8 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
 @Entity
 public class UserAccount {
 
@@ -5,36 +10,32 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
-    private String fullName;
-    private boolean active = true;
+    private String username;
+    private String password;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // ===== TEST NEEDS THIS =====
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getEmail() { return email; }
-    public String getFullName() { return fullName; }
-
-    // ===== TEST NEEDS THIS =====
-    public boolean isActive() { return active; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-
-    // ===== TEST CALLS THIS DIRECTLY =====
     @PrePersist
-    public void prePersist() {
+    public void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
 
-    // ===== TEST CALLS THIS DIRECTLY =====
     @PreUpdate
-    public void preUpdate() {
+    public void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
 }

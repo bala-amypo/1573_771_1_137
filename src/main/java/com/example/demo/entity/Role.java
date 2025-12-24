@@ -1,3 +1,7 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+
 @Entity
 public class Role {
 
@@ -6,13 +10,14 @@ public class Role {
     private Long id;
 
     private String roleName;
-    private boolean active = true;
+    private String description;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public String getRoleName() { return roleName; }
+    public void setRoleName(String roleName) { this.roleName = roleName; }
 
-    // TEST EXPECTS isActive()
-    public boolean isActive() { return active; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }
