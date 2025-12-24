@@ -11,10 +11,12 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    // tests + services expect this
+    @Column(unique = true, nullable = false)
+    private String permissionKey;
 
-    @Column(nullable = false)
+    private String description;
+
     private boolean active = true;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -23,9 +25,30 @@ public class Permission {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    // ===== REQUIRED BY TESTS =====
+    // ===== REQUIRED BY SERVICES =====
+    public String getPermissionKey() {
+        return permissionKey;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public boolean isActive() {
         return active;
+    }
+
+    // ===== setters =====
+    public void setPermissionKey(String permissionKey) {
+        this.permissionKey = permissionKey;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @PrePersist
@@ -37,30 +60,5 @@ public class Permission {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = new Date();
-    }
-
-    // ===== Getters & Setters =====
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean getActive() {
-        return active;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 }

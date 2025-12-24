@@ -12,17 +12,15 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // services expect getRoleName()
     @Column(unique = true, nullable = false)
-    private String name;
+    private String roleName;
+
+    private String description;
 
     private boolean active = true;
 
     @ManyToMany
-    @JoinTable(
-        name = "role_permissions",
-        joinColumns = @JoinColumn(name = "role_id"),
-        inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
     private Set<Permission> permissions;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -32,8 +30,33 @@ public class Role {
     private Date updatedAt;
 
     // ===== REQUIRED =====
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean getActive() {
+        return active;
+    }
+
     public boolean isActive() {
         return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    // ===== setters =====
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @PrePersist
@@ -45,16 +68,5 @@ public class Role {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = new Date();
-    }
-
-    // Getters & Setters
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public Set<Permission> getPermissions() { return permissions; }
-
-    public void setId(Long id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setPermissions(Set<Permission> permissions) {
-        this.permissions = permissions;
     }
 }
