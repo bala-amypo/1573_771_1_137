@@ -2,8 +2,6 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "user_accounts")
@@ -15,28 +13,37 @@ public class UserAccount {
 
     private String email;
 
-    private String fullName;
-
-    // ✅ REQUIRED BY TESTS
     private String password;
 
     private boolean active = true;
 
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "user_roles",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
+    public UserAccount() {
+        // REQUIRED by JPA & tests
+    }
 
-    // ---------- REQUIRED METHODS ----------
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    // ---------- REQUIRED GETTERS & SETTERS ----------
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -47,57 +54,28 @@ public class UserAccount {
         this.email = email;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    // ✅ REQUIRED BY TESTS
+    // 🔴 MANDATORY (your test errors were here)
     public String getPassword() {
         return password;
     }
 
-    // ✅ REQUIRED BY TESTS
     public void setPassword(String password) {
         this.password = password;
     }
 
-    // ✅ REQUIRED BY TESTS
     public boolean isActive() {
         return active;
     }
 
-    // ✅ REQUIRED BY TESTS
-    public boolean getActive() {
-        return active;
-    }
-
-    // ✅ REQUIRED BY TESTS
     public void setActive(boolean active) {
         this.active = active;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    // ---------- LIFECYCLE METHODS (TESTS CALL THESE) ----------
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
