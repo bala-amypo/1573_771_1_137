@@ -11,6 +11,9 @@ public class Role {
 
     private String roleName;
     private String description;
+    private Boolean active = true;
+
+    public Role() {}
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -20,4 +23,7 @@ public class Role {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }
