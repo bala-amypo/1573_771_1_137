@@ -3,18 +3,20 @@ package com.example.demo.dto;
 public class RegisterRequestDto {
 
     private String username;
+    private String email;
     private String password;
 
-    public String getUsername() {
-        return username;
-    }
+    public String getUsername() { return username; }
+    public String getEmail() { return email; }
+    public String getPassword() { return password; }
 
+    // ===== REQUIRED =====
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String password) {

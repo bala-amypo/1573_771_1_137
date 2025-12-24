@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "permissions")
@@ -11,70 +11,56 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String permissionKey;
-    private String description;
-    private Boolean active = true;
+    @Column(nullable = false, unique = true)
+    private String name;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private boolean active = true;
 
-    // ===== REQUIRED GETTERS / SETTERS =====
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+
+    // ===== REQUIRED BY TESTS =====
+    public boolean isActive() {
+        return active;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = new Date();
+    }
+
+    // ===== Getters & Setters =====
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean getActive() {
+        return active;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getPermissionKey() {
-        return permissionKey;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setPermissionKey(String permissionKey) {
-        this.permissionKey = permissionKey;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    // 🔥 TESTS CALL THIS
-    public boolean isActive() {
-        return Boolean.TRUE.equals(active);
-    }
-
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    // ===== LIFECYCLE =====
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
     }
 }
