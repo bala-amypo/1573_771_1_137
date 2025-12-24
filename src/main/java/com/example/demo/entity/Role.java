@@ -28,7 +28,11 @@ public class Role {
     public String getRoleName() { return roleName; }
     public String getDescription() { return description; }
 
+    // required by tests
     public Boolean isActive() { return active; }
+
+    // required by services
+    public Boolean getActive() { return active; }
 
     public void setRoleName(String roleName) { this.roleName = roleName; }
     public void setDescription(String description) { this.description = description; }

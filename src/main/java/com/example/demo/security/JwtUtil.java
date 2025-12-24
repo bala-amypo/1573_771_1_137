@@ -1,9 +1,13 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
@@ -11,13 +15,15 @@ public class JwtUtil {
     private static final String SECRET_KEY = "test-secret-key";
     private static final long EXPIRATION = 3600000;
 
-    public JwtUtil() {}
+    public JwtUtil() {
+    }
 
-    // REQUIRED BY TESTS
+    /* ===== REQUIRED BY TESTS ===== */
     public String generateToken(String username) {
         return generateToken(new HashMap<>(), username);
     }
 
+    /* ===== REQUIRED BY SERVICES ===== */
     public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
@@ -28,8 +34,14 @@ public class JwtUtil {
                 .compact();
     }
 
+    /* ===== REQUIRED BY TESTS ===== */
     public String extractUsername(String token) {
         return getClaims(token).getSubject();
+    }
+
+    /* ===== REQUIRED BY FILTER ===== */
+    public String getUsername(String token) {
+        return extractUsername(token);
     }
 
     public Claims getClaims(String token) {

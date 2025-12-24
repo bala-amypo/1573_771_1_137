@@ -28,7 +28,11 @@ public class Permission {
     public String getPermissionKey() { return permissionKey; }
     public String getDescription() { return description; }
 
+    // required by tests
     public Boolean isActive() { return active; }
+
+    // required by services
+    public Boolean getActive() { return active; }
 
     public void setPermissionKey(String permissionKey) { this.permissionKey = permissionKey; }
     public void setDescription(String description) { this.description = description; }

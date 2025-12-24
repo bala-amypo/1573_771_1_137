@@ -39,18 +39,23 @@ public class UserAccount {
         this.updatedAt = Instant.now();
     }
 
+    /* ===== GETTERS ===== */
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getEmail() { return email; }
     public String getFullName() { return fullName; }
     public String getPassword() { return password; }
 
+    // required by tests
     public Boolean isActive() { return active; }
+
+    // required by services
+    public Boolean getActive() { return active; }
 
     public Instant getCreatedAt() { return createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }
 
+    /* ===== SETTERS ===== */
+    public void setId(Long id) { this.id = id; }
     public void setEmail(String email) { this.email = email; }
     public void setFullName(String fullName) { this.fullName = fullName; }
     public void setPassword(String password) { this.password = password; }
