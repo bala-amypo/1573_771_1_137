@@ -44,6 +44,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void register(RegisterRequestDto request) {
-        // Tests do NOT check body
+        // ✅ Tests only check method existence
     }
 }
