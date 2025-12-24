@@ -5,7 +5,7 @@ public class AuthRequestDto {
     private String username;
     private String password;
 
-    // ✅ TESTS USE THIS
+    // 🔥 TESTS REQUIRE THIS EXACT METHOD
     public String getUsername() {
         return username;
     }
@@ -14,7 +14,6 @@ public class AuthRequestDto {
         this.username = username;
     }
 
-    // ✅ REQUIRED
     public String getPassword() {
         return password;
     }
