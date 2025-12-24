@@ -12,7 +12,6 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // services expect getRoleName()
     @Column(unique = true, nullable = false)
     private String roleName;
 
@@ -29,7 +28,11 @@ public class Role {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    // ===== REQUIRED =====
+    // ===== REQUIRED GETTERS =====
+    public Long getId() {
+        return id;
+    }
+
     public String getRoleName() {
         return roleName;
     }
@@ -46,17 +49,17 @@ public class Role {
         return active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    // ===== setters =====
+    // ===== REQUIRED SETTERS =====
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @PrePersist

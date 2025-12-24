@@ -11,7 +11,6 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // tests + services expect this
     @Column(unique = true, nullable = false)
     private String permissionKey;
 
@@ -25,7 +24,11 @@ public class Permission {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    // ===== REQUIRED BY SERVICES =====
+    // ===== REQUIRED GETTERS =====
+    public Long getId() {
+        return id;
+    }
+
     public String getPermissionKey() {
         return permissionKey;
     }
@@ -34,11 +37,15 @@ public class Permission {
         return description;
     }
 
+    public boolean getActive() {
+        return active;
+    }
+
     public boolean isActive() {
         return active;
     }
 
-    // ===== setters =====
+    // ===== REQUIRED SETTERS =====
     public void setPermissionKey(String permissionKey) {
         this.permissionKey = permissionKey;
     }

@@ -13,10 +13,11 @@ public class UserAccount {
     private Long id;
 
     private String username;
+
     private String email;
+
     private String password;
 
-    // services expect getFullName()
     private String fullName;
 
     private boolean active = true;
@@ -30,7 +31,19 @@ public class UserAccount {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    // ===== REQUIRED =====
+    // ===== REQUIRED GETTERS =====
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     public String getFullName() {
         return fullName;
     }
@@ -43,11 +56,11 @@ public class UserAccount {
         return active;
     }
 
+    // ===== REQUIRED SETTERS =====
     public void setActive(boolean active) {
         this.active = active;
     }
 
-    // ===== setters =====
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
