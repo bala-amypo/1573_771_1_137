@@ -11,70 +11,30 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
     private String permissionKey;
-
     private String description;
-
-    private Boolean active = true;
+    private boolean active = true;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    /* ===== GETTERS ===== */
+    // ===== REQUIRED GETTERS & SETTERS =====
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getPermissionKey() {
-        return permissionKey;
-    }
+    public String getPermissionKey() { return permissionKey; }
+    public void setPermissionKey(String permissionKey) { this.permissionKey = permissionKey; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public Boolean getActive() {
-        return active;
-    }
+    public boolean getActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 
-    public boolean isActive() {
-        return Boolean.TRUE.equals(active);
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /* ===== SETTERS (REQUIRED BY SERVICES) ===== */
-
-    public void setPermissionKey(String permissionKey) {
-        this.permissionKey = permissionKey;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    /* ===== JPA HOOKS (REQUIRED BY TESTS) ===== */
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

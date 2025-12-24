@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.AuthRequestDto;
+import com.example.demo.dto.RegisterRequestDto;
 
 public interface AuthService {
 
-    // ✅ TESTS EXPECT STRING TOKEN
     String login(AuthRequestDto request);
+
+    void register(RegisterRequestDto request);
 }
