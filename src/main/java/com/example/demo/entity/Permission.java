@@ -21,7 +21,7 @@ public class Permission {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    /* ================= REQUIRED BY TESTS ================= */
+    /* ===== GETTERS ===== */
 
     public Long getId() {
         return id;
@@ -43,10 +43,6 @@ public class Permission {
         return Boolean.TRUE.equals(active);
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -55,7 +51,21 @@ public class Permission {
         return updatedAt;
     }
 
-    /* ================= JPA HOOKS ================= */
+    /* ===== SETTERS (REQUIRED BY SERVICES) ===== */
+
+    public void setPermissionKey(String permissionKey) {
+        this.permissionKey = permissionKey;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    /* ===== JPA HOOKS (REQUIRED BY TESTS) ===== */
 
     @PrePersist
     public void prePersist() {

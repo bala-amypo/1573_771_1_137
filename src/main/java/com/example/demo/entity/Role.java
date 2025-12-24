@@ -31,7 +31,7 @@ public class Role {
     )
     private Set<Permission> permissions = new HashSet<>();
 
-    /* ================= REQUIRED BY TESTS ================= */
+    /* ===== GETTERS ===== */
 
     public Long getId() {
         return id;
@@ -53,10 +53,6 @@ public class Role {
         return Boolean.TRUE.equals(active);
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     public Set<Permission> getPermissions() {
         return permissions;
     }
@@ -69,7 +65,21 @@ public class Role {
         return updatedAt;
     }
 
-    /* ================= JPA HOOKS ================= */
+    /* ===== SETTERS (REQUIRED BY SERVICES) ===== */
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    /* ===== JPA HOOKS (REQUIRED BY TESTS) ===== */
 
     @PrePersist
     public void prePersist() {
