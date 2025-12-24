@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "user_account")
 public class UserAccount {
 
     @Id
@@ -18,20 +19,17 @@ public class UserAccount {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // REQUIRED BY TESTS
     @PrePersist
-    public void prePersist() {
+    public void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
         active = true;
     }
 
     @PreUpdate
-    public void preUpdate() {
+    public void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
-    // ===== REQUIRED GETTERS / SETTERS =====
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

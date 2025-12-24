@@ -11,39 +11,36 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET = "mysecretkeymysecretkeymysecretkey12345";
-    private static final long EXPIRATION = 1000 * 60 * 60;
+    private static final String SECRET =
+            "mysecretkeymysecretkeymysecretkeymysecretkey";
+    private static final long EXPIRATION = 3600000;
 
-    private Key getSigningKey() {
+    private Key getKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
-    // REQUIRED BY TESTS
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // REQUIRED BY FILTER + TESTS
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+                .setSigningKey(getKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
     }
 
-    // REQUIRED BY TESTS
     public boolean isTokenValid(String token, UserDetails userDetails) {
         return extractUsername(token).equals(userDetails.getUsername());
     }
 
-    // REQUIRED BY TESTS
     public long getExpirationMillis() {
         return EXPIRATION;
     }
