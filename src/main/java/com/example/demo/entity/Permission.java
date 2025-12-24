@@ -12,53 +12,58 @@ public class Permission {
     private Long id;
 
     private String permissionKey;
+
     private String description;
-    private boolean active = true;
+
+    private Boolean active = true;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // ===================== GETTERS =====================
+    /* ================= REQUIRED BY TESTS ================= */
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {            // TESTS CALL setId()
+        this.id = id;
     }
 
     public String getPermissionKey() {
         return permissionKey;
     }
 
+    public void setPermissionKey(String permissionKey) { // TESTS CALL setPermissionKey()
+        this.permissionKey = permissionKey;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public boolean getActive() {
-        return active;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    // ===================== SETTERS =====================
-
-    public void setPermissionKey(String permissionKey) {
-        this.permissionKey = permissionKey;
-    }
-
-    public void setDescription(String description) {
+    public void setDescription(String description) { // TESTS CALL setDescription()
         this.description = description;
     }
 
-    public void setActive(boolean active) {
+    public Boolean getActive() {
+        return active;
+    }
+
+    public boolean isActive() {             // TESTS CALL isActive()
+        return Boolean.TRUE.equals(active);
+    }
+
+    public void setActive(boolean active) { // TESTS CALL setActive()
         this.active = active;
     }
 
-    // ===================== JPA LIFECYCLE =====================
+    /* ================= LIFECYCLE (MANDATORY) ================= */
 
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
