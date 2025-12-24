@@ -15,14 +15,15 @@ public class UserAccount {
 
     private String password;
 
+    private String fullName;
+
     private boolean active = true;
 
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
     public UserAccount() {
-        // REQUIRED by JPA & tests
+        // required
     }
 
     @PrePersist
@@ -36,7 +37,7 @@ public class UserAccount {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // ---------- REQUIRED GETTERS & SETTERS ----------
+    // ---------- REQUIRED METHODS ----------
 
     public Long getId() {
         return id;
@@ -54,7 +55,7 @@ public class UserAccount {
         this.email = email;
     }
 
-    // 🔴 MANDATORY (your test errors were here)
+    // 🔴 REQUIRED
     public String getPassword() {
         return password;
     }
@@ -63,7 +64,17 @@ public class UserAccount {
         this.password = password;
     }
 
-    public boolean isActive() {
+    // 🔴 REQUIRED (new)
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    // 🔴 REQUIRED (tests call getActive(), not isActive())
+    public boolean getActive() {
         return active;
     }
 
