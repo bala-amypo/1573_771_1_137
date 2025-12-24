@@ -11,25 +11,38 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
-    private String fullName;
-
-    private Boolean active = true;
+    private boolean active = true;
 
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
-    // ---------- REQUIRED NO-ARGS CONSTRUCTOR ----------
-    public UserAccount() {
+    // ===== REQUIRED BY TEST CASES =====
+
+    public boolean isActive() {
+        return active;
     }
 
-    // ---------- REQUIRED GETTERS & SETTERS ----------
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    // ===== GETTERS & SETTERS =====
 
     public Long getId() {
         return id;
@@ -47,7 +60,7 @@ public class UserAccount {
         this.username = username;
     }
 
-    // ✅ REQUIRED BY SERVICE + TESTS
+    // ❗ TESTS REQUIRE getEmail()
     public String getEmail() {
         return email;
     }
@@ -56,7 +69,6 @@ public class UserAccount {
         this.email = email;
     }
 
-    // ✅ REQUIRED BY SPRING SECURITY
     public String getPassword() {
         return password;
     }
@@ -65,39 +77,15 @@ public class UserAccount {
         this.password = password;
     }
 
-    // ✅ REQUIRED BY TESTS
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    // ✅ REQUIRED BY TESTS
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
-    // ✅ REQUIRED BY TESTS
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    // ✅ REQUIRED BY TESTS
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
