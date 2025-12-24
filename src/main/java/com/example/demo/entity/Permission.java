@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "permissions")
@@ -11,74 +10,34 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String permissionKey;
+    private String name;
+    private boolean active = true;
 
-    private String description;
-
-    private Boolean active = true;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    /* ================= REQUIRED GETTERS ================= */
+    // ===== REQUIRED BY TESTS =====
 
     public Long getId() {
         return id;
     }
 
-    public String getPermissionKey() {
-        return permissionKey;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public boolean isActive() {
-        return Boolean.TRUE.equals(active);
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /* ================= REQUIRED SETTERS ================= */
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setPermissionKey(String permissionKey) {
-        this.permissionKey = permissionKey;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
-    /* ================= TEST-REQUIRED LIFECYCLE ================= */
+    // ===== Getters & Setters =====
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+    public String getName() {
+        return name;
     }
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public void setName(String name) {
+        this.name = name;
     }
 }
