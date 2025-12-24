@@ -11,43 +11,20 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "permission_key", nullable = false, unique = true)
     private String permissionKey;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "active")
     private Boolean active = true;
 
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // =====================
-    // JPA Lifecycle Hooks
-    // =====================
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
+    // ===== REQUIRED GETTERS / SETTERS =====
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // =====================
-    // Getters & Setters (TEST REQUIRED)
-    // =====================
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {   // ✅ tests call setId()
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -71,6 +48,11 @@ public class Permission {
         return active;
     }
 
+    // 🔥 TESTS CALL THIS
+    public boolean isActive() {
+        return Boolean.TRUE.equals(active);
+    }
+
     public void setActive(Boolean active) {
         this.active = active;
     }
@@ -81,5 +63,18 @@ public class Permission {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    // ===== LIFECYCLE =====
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }

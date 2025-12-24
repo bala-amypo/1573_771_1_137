@@ -12,22 +12,19 @@ public class Role {
     private Long id;
 
     private String roleName;
-
     private String description;
-
-    private boolean active = true;
+    private Boolean active = true;
 
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
-    /* ================= REQUIRED BY TESTS ================= */
+    // ===== REQUIRED GETTERS / SETTERS =====
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {            // ✅ REQUIRED
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -35,7 +32,7 @@ public class Role {
         return roleName;
     }
 
-    public void setRoleName(String roleName) { // ✅ REQUIRED
+    public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
 
@@ -43,19 +40,15 @@ public class Role {
         return description;
     }
 
-    public void setDescription(String description) { // ✅ REQUIRED
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public boolean getActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public boolean isActive() {             // ✅ REQUIRED
-        return active;
-    }
-
-    public void setActive(boolean active) { // ✅ REQUIRED
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
@@ -67,7 +60,7 @@ public class Role {
         return updatedAt;
     }
 
-    /* ================= JPA LIFECYCLE ================= */
+    // ===== LIFECYCLE =====
 
     @PrePersist
     public void prePersist() {

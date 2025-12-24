@@ -12,24 +12,20 @@ public class UserAccount {
     private Long id;
 
     private String email;
-
     private String password;
-
     private String fullName;
-
-    private boolean active = true;
+    private Boolean active = true;
 
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
-    /* ================= REQUIRED BY TESTS ================= */
+    // ===== REQUIRED GETTERS / SETTERS =====
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {          // ✅ REQUIRED
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -37,7 +33,7 @@ public class UserAccount {
         return email;
     }
 
-    public void setEmail(String email) {  // ✅ REQUIRED
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -45,7 +41,7 @@ public class UserAccount {
         return password;
     }
 
-    public void setPassword(String password) { // ✅ REQUIRED
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -53,31 +49,27 @@ public class UserAccount {
         return fullName;
     }
 
-    public void setFullName(String fullName) { // ✅ REQUIRED
+    public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    public boolean getActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public boolean isActive() {            // ✅ REQUIRED (TESTS CALL isActive)
-        return active;
-    }
-
-    public void setActive(boolean active) { // ✅ REQUIRED
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
-    public LocalDateTime getCreatedAt() {  // ✅ REQUIRED
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {  // ✅ REQUIRED
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    /* ================= JPA LIFECYCLE ================= */
+    // ===== LIFECYCLE =====
 
     @PrePersist
     public void prePersist() {
