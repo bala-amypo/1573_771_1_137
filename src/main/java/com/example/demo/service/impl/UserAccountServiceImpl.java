@@ -10,34 +10,43 @@ import java.util.List;
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private final UserAccountRepository userAccountRepository;
+    private final UserAccountRepository repository;
 
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository) {
-        this.userAccountRepository = userAccountRepository;
+    public UserAccountServiceImpl(UserAccountRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public List<UserAccount> getAllUsers() {
-        return userAccountRepository.findAll();
+    public UserAccount createUser(UserAccount user) {
+        return repository.save(user);
+    }
+
+    @Override
+    public UserAccount updateUser(Long id, UserAccount user) {
+        UserAccount existing = repository.findById(id).orElse(null);
+        if (existing == null) return null;
+
+        existing.setUsername(user.getUsername());
+        existing.setPassword(user.getPassword());
+        return repository.save(existing);
     }
 
     @Override
     public UserAccount getUserById(Long id) {
-        return userAccountRepository.findById(id).orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
-    public UserAccount saveUser(UserAccount user) {
-        return userAccountRepository.save(user);
+    public List<UserAccount> getAllUsers() {
+        return repository.findAll();
     }
 
-    // ✅ REQUIRED BY INTERFACE
     @Override
     public void deactivateUser(Long id) {
-        UserAccount user = userAccountRepository.findById(id).orElse(null);
+        UserAccount user = repository.findById(id).orElse(null);
         if (user != null) {
             user.setActive(false);
-            userAccountRepository.save(user);
+            repository.save(user);
         }
     }
 }

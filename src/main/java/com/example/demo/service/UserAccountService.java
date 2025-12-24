@@ -6,12 +6,13 @@ import java.util.List;
 
 public interface UserAccountService {
 
-    List<UserAccount> getAllUsers();
+    UserAccount createUser(UserAccount user);
+
+    UserAccount updateUser(Long id, UserAccount user);
 
     UserAccount getUserById(Long id);
 
-    UserAccount saveUser(UserAccount user);
+    List<UserAccount> getAllUsers();
 
-    // ✅ REQUIRED
     void deactivateUser(Long id);
 }

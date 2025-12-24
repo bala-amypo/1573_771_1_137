@@ -7,6 +7,5 @@ public interface AuthService {
 
     String login(AuthRequestDto request);
 
-    // ✅ MUST be void (tests expect this)
     void register(RegisterRequestDto request);
 }

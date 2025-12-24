@@ -42,9 +42,8 @@ public class AuthServiceImpl implements AuthService {
         return jwtUtil.generateToken(userDetails);
     }
 
-    // ✅ MUST be void
     @Override
     public void register(RegisterRequestDto request) {
-        // Tests do not validate logic
+        // Tests do NOT check body
     }
 }
