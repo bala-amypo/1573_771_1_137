@@ -13,9 +13,12 @@ public class UserAccount {
 
     private String password;
 
-    private boolean active;
+    private boolean active = true;
 
-    // ✅ REQUIRED BY TESTS
+    public Long getId() {
+        return id;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -24,7 +27,7 @@ public class UserAccount {
         this.username = username;
     }
 
-    // ✅ REQUIRED BY TESTS
+    // ✅ REQUIRED
     public String getPassword() {
         return password;
     }
@@ -33,7 +36,7 @@ public class UserAccount {
         this.password = password;
     }
 
-    // ✅ REQUIRED BY TESTS
+    // ✅ REQUIRED
     public boolean isActive() {
         return active;
     }

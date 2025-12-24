@@ -1,17 +1,17 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.UserAccount;
+
 import java.util.List;
 
 public interface UserAccountService {
 
-    UserAccount createUser(UserAccount user);
-
-    UserAccount updateUser(Long id, UserAccount user);
+    List<UserAccount> getAllUsers();
 
     UserAccount getUserById(Long id);
 
-    List<UserAccount> getAllUsers();
+    UserAccount saveUser(UserAccount user);
 
+    // ✅ REQUIRED
     void deactivateUser(Long id);
 }

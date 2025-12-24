@@ -28,8 +28,16 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public UserAccount saveUser(UserAccount user) {
-        // ✅ Tests expect username, NOT fullName
-        user.getUsername();
         return userAccountRepository.save(user);
+    }
+
+    // ✅ REQUIRED BY INTERFACE
+    @Override
+    public void deactivateUser(Long id) {
+        UserAccount user = userAccountRepository.findById(id).orElse(null);
+        if (user != null) {
+            user.setActive(false);
+            userAccountRepository.save(user);
+        }
     }
 }
