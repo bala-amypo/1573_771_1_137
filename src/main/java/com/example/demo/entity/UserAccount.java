@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "user_accounts", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-})
+@Table(name = "user_accounts")
 public class UserAccount {
 
     @Id
@@ -30,24 +28,28 @@ public class UserAccount {
     }
 
     @PrePersist
-    public void onCreate() {
-        createdAt = Instant.now();
-        updatedAt = Instant.now();
+    public void prePersist() {
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
         if (active == null) active = true;
     }
 
     @PreUpdate
-    public void onUpdate() {
-        updatedAt = Instant.now();
+    public void preUpdate() {
+        this.updatedAt = Instant.now();
     }
 
-    /* getters & setters */
-
     public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
     public String getEmail() { return email; }
     public String getFullName() { return fullName; }
     public String getPassword() { return password; }
-    public Boolean getActive() { return active; }
+
+    public Boolean isActive() { return active; }
+
+    public Instant getCreatedAt() { return createdAt; }
+    public Instant getUpdatedAt() { return updatedAt; }
 
     public void setEmail(String email) { this.email = email; }
     public void setFullName(String fullName) { this.fullName = fullName; }

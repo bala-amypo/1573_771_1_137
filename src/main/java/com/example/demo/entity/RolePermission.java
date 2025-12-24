@@ -27,11 +27,18 @@ public class RolePermission {
     }
 
     @PrePersist
-    public void onGrant() {
+    public void prePersist() {
         grantedAt = Instant.now();
     }
 
     public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
     public Role getRole() { return role; }
     public Permission getPermission() { return permission; }
+
+    public Instant getGrantedAt() { return grantedAt; }
+
+    public void setRole(Role role) { this.role = role; }
+    public void setPermission(Permission permission) { this.permission = permission; }
 }

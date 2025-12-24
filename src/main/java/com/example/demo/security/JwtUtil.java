@@ -1,22 +1,26 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.util.*;
 
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "secret-key-for-tests";
-    private static final long EXPIRATION = 3600000; // 1 hour
+    private static final String SECRET_KEY = "test-secret-key";
+    private static final long EXPIRATION = 3600000;
 
     public JwtUtil() {}
 
-    public String generateToken(String subject) {
+    // REQUIRED BY TESTS
+    public String generateToken(String username) {
+        return generateToken(new HashMap<>(), username);
+    }
+
+    public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
@@ -24,7 +28,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String getUsername(String token) {
+    public String extractUsername(String token) {
         return getClaims(token).getSubject();
     }
 
@@ -36,7 +40,11 @@ public class JwtUtil {
     }
 
     public boolean isTokenValid(String token, String username) {
-        return getUsername(token).equals(username)
+        return extractUsername(token).equals(username)
                 && getClaims(token).getExpiration().after(new Date());
+    }
+
+    public long getExpirationMillis() {
+        return EXPIRATION;
     }
 }
