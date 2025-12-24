@@ -1,16 +1,38 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.UserRole;
+import com.example.demo.repository.UserRoleRepository;
+import com.example.demo.service.UserRoleService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface UserRoleService {
+@Service
+public class UserRoleServiceImpl implements UserRoleService {
 
-    UserRole assignRole(UserRole userRole);
+    private final UserRoleRepository repository;
 
-    List<UserRole> getRolesForUser(Long userId);
+    public UserRoleServiceImpl(UserRoleRepository repository) {
+        this.repository = repository;
+    }
 
-    UserRole getMappingById(Long id);
+    @Override
+    public UserRole assignRole(UserRole userRole) {
+        return repository.save(userRole);
+    }
 
-    void removeRole(Long id);
+    @Override
+    public List<UserRole> getRolesForUser(Long userId) {
+        return repository.findByUserId(userId);   // ✅ NOW EXISTS
+    }
+
+    @Override
+    public UserRole getMappingById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void removeRole(Long id) {
+        repository.deleteById(id);
+    }
 }
