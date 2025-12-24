@@ -11,6 +11,7 @@ public class Role {
     private Long id;
 
     private String roleName;
+    private String description;
     private Boolean active = true;
 
     public Long getId() {
@@ -21,11 +22,30 @@ public class Role {
         return roleName;
     }
 
+    // 🔴 REQUIRED
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    // 🔴 REQUIRED
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Boolean getActive() {
         return active;
     }
 
     public boolean isActive() {
         return Boolean.TRUE.equals(active);
+    }
+
+    // 🔴 REQUIRED
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
