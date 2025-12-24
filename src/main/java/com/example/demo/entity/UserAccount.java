@@ -11,33 +11,23 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String username;
+
     private String email;
 
     private String password;
 
     private String fullName;
 
-    private boolean active = true;
+    private Boolean active = true;
 
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 
-    public UserAccount() {
-        // required
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // ---------- REQUIRED METHODS ----------
+    /* =========================
+       REQUIRED GETTERS/SETTERS
+       ========================= */
 
     public Long getId() {
         return id;
@@ -45,6 +35,14 @@ public class UserAccount {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -55,38 +53,53 @@ public class UserAccount {
         this.email = email;
     }
 
-    // 🔴 REQUIRED
+    // 🔴 REQUIRED BY TESTS
     public String getPassword() {
         return password;
     }
 
+    // 🔴 REQUIRED BY TESTS
     public void setPassword(String password) {
         this.password = password;
     }
 
-    // 🔴 REQUIRED (new)
+    // 🔴 REQUIRED BY ERROR
     public String getFullName() {
         return fullName;
     }
 
+    // 🔴 REQUIRED
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    // 🔴 REQUIRED (tests call getActive(), not isActive())
-    public boolean getActive() {
+    // 🔴 REQUIRED BY ERROR
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    // 🔴 REQUIRED
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
+    // 🔴 REQUIRED BY TESTS
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
+    // 🔴 REQUIRED
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    // 🔴 REQUIRED BY TESTS
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    // 🔴 REQUIRED
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
