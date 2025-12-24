@@ -1,10 +1,8 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "role")
 public class Role {
 
     @Id
@@ -15,58 +13,16 @@ public class Role {
     private String description;
     private Boolean active = true;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Role() {
-    }
+    public String getRoleName() { return roleName; }
+    public void setRoleName(String roleName) { this.roleName = roleName; }
 
-    // ===== REQUIRED BY TESTS =====
-    public Long getId() {
-        return id;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    public Boolean getActive() { return active; }
+    public boolean isActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }
