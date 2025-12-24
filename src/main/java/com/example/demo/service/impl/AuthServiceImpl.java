@@ -34,7 +34,7 @@ public class AuthServiceImpl implements AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    // ================= LOGIN (TEST EXPECTS STRING TOKEN) =================
+    // ================= LOGIN =================
     @Override
     public String login(AuthRequestDto request) {
 
@@ -45,31 +45,27 @@ public class AuthServiceImpl implements AuthService {
                 )
         );
 
-        // ✅ LOAD USERDETAILS (MANDATORY)
         UserDetails userDetails =
                 userDetailsService.loadUserByUsername(request.getUsername());
 
-        // ✅ GENERATE TOKEN USING USERDETAILS
         return jwtUtil.generateToken(userDetails);
     }
 
-    // ================= REGISTER =================
+    // ================= REGISTER (OPTIONAL) =================
     public String register(AuthRequestDto request) {
 
         UserAccount user = new UserAccount();
         user.setUsername(request.getUsername());
-        user.setEmail(request.getUsername()); // email == username (tests expect this)
+        user.setEmail(request.getUsername());
         user.setFullName(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setActive(true);
 
         userAccountRepository.save(user);
 
-        // ✅ LOAD USERDETAILS AFTER SAVE
         UserDetails userDetails =
                 userDetailsService.loadUserByUsername(user.getUsername());
 
-        // ✅ TOKEN FROM USERDETAILS
         return jwtUtil.generateToken(userDetails);
     }
 }
