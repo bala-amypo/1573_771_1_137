@@ -19,16 +19,22 @@ public class Permission {
 
     public Permission() {}
 
-    public Permission(String key, String desc, Boolean active) {
-        this.permissionKey = key;
-        this.description = desc;
+    public Permission(String permissionKey, String description, Boolean active) {
+        this.permissionKey = permissionKey;
+        this.description = description;
         this.active = active != null ? active : true;
     }
 
+    // getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
     public String getPermissionKey() { return permissionKey; }
     public void setPermissionKey(String permissionKey) { this.permissionKey = permissionKey; }
-    public boolean isActive() { return active; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public boolean isActive() { return active != null && active; }
     public void setActive(Boolean active) { this.active = active; }
 }

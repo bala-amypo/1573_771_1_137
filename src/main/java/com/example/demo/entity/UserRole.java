@@ -19,23 +19,27 @@ public class UserRole {
 
     private Instant assignedAt;
 
-    public UserRole() {}
-
-    public UserRole(UserAccount u, Role r) {
-        this.user = u;
-        this.role = r;
-    }
-
     @PrePersist
     public void prePersist() {
         this.assignedAt = Instant.now();
     }
 
+    public UserRole() {}
+
+    public UserRole(UserAccount user, Role role) {
+        this.user = user;
+        this.role = role;
+    }
+
+    // getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
     public UserAccount getUser() { return user; }
     public void setUser(UserAccount user) { this.user = user; }
+
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }
+
     public Instant getAssignedAt() { return assignedAt; }
 }
