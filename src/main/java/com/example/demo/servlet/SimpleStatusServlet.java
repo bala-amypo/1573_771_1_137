@@ -1,6 +1,5 @@
 package com.example.demo.servlet;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +13,7 @@ public class SimpleStatusServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req,
                       HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws IOException {
 
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("text/plain");
