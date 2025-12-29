@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.AuthRequestDto;
+import com.example.demo.dto.AuthResponseDto;
 import com.example.demo.dto.RegisterRequestDto;
 import com.example.demo.entity.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
@@ -28,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
 
     // ================= REGISTER =================
     @Override
-    public String register(RegisterRequestDto request) {
+    public AuthResponseDto register(RegisterRequestDto request) {
 
         if (userAccountRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already registered");
@@ -48,12 +49,14 @@ public class AuthServiceImpl implements AuthService {
                 .authorities("ROLE_USER")
                 .build();
 
-        return jwtUtil.generateToken(userDetails);
+        String token = jwtUtil.generateToken(userDetails);
+
+        return new AuthResponseDto(token);
     }
 
     // ================= LOGIN =================
     @Override
-    public String login(AuthRequestDto request) {
+    public AuthResponseDto login(AuthRequestDto request) {
 
         UserAccount user = userAccountRepository
                 .findByEmail(request.getEmail())
@@ -73,6 +76,8 @@ public class AuthServiceImpl implements AuthService {
                 .authorities("ROLE_USER")
                 .build();
 
-        return jwtUtil.generateToken(userDetails);
+        String token = jwtUtil.generateToken(userDetails);
+
+        return new AuthResponseDto(token);
     }
 }
