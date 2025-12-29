@@ -3,10 +3,15 @@ package com.example.demo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.Instant;
 
 @Entity
 @Table(name = "user_accounts")
+@Getter
+@Setter
 public class UserAccount {
 
     @Id
@@ -42,6 +47,4 @@ public class UserAccount {
     public void preUpdate() {
         updatedAt = Instant.now();
     }
-
-    // getters & setters
 }

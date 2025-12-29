@@ -1,45 +1,36 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.Instant;
 
 @Entity
 @Table(name = "user_roles")
+@Getter
+@Setter
 public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private UserAccount user;
 
     @ManyToOne
+    @JoinColumn(name = "role_id")
     private Role role;
 
+    @JsonIgnore
     private Instant assignedAt;
 
     @PrePersist
     public void prePersist() {
-        this.assignedAt = Instant.now();
+        assignedAt = Instant.now();
     }
-
-    public UserRole() {}
-
-    public UserRole(UserAccount user, Role role) {
-        this.user = user;
-        this.role = role;
-    }
-
-    // getters & setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public UserAccount getUser() { return user; }
-    public void setUser(UserAccount user) { this.user = user; }
-
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
-
-    public Instant getAssignedAt() { return assignedAt; }
 }

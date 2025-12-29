@@ -1,45 +1,36 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.Instant;
 
 @Entity
 @Table(name = "role_permissions")
+@Getter
+@Setter
 public class RolePermission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "role_id")
     private Role role;
 
     @ManyToOne
+    @JoinColumn(name = "permission_id")
     private Permission permission;
 
+    @JsonIgnore
     private Instant grantedAt;
 
     @PrePersist
     public void prePersist() {
-        this.grantedAt = Instant.now();
+        grantedAt = Instant.now();
     }
-
-    public RolePermission() {}
-
-    public RolePermission(Role role, Permission permission) {
-        this.role = role;
-        this.permission = permission;
-    }
-
-    // getters & setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
-
-    public Permission getPermission() { return permission; }
-    public void setPermission(Permission permission) { this.permission = permission; }
-
-    public Instant getGrantedAt() { return grantedAt; }
 }
