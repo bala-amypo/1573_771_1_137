@@ -20,7 +20,7 @@ public class SwaggerConfig {
 
         return new OpenAPI()
                 .servers(List.of(
-                        new Server().url("https://9123.pro604cr.amypo.ai")
+                        new Server().url("https://9097.pro604cr.amypo.ai")
                 ))
                 .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
                 .components(new Components()
