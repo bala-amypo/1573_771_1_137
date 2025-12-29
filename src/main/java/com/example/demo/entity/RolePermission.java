@@ -2,15 +2,11 @@ package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.Instant;
 
 @Entity
 @Table(name = "role_permissions")
-@Getter
-@Setter
 public class RolePermission {
 
     @Id
@@ -32,5 +28,27 @@ public class RolePermission {
     @PrePersist
     public void prePersist() {
         grantedAt = Instant.now();
+    }
+
+    // GETTERS & SETTERS
+
+    public Long getId() {
+        return id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Permission getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Permission permission) {
+        this.permission = permission;
     }
 }

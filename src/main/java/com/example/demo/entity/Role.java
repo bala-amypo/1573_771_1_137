@@ -2,13 +2,9 @@ package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "roles")
-@Getter
-@Setter
 public class Role {
 
     @Id
@@ -22,10 +18,40 @@ public class Role {
     private String description;
 
     @JsonIgnore
-    private Boolean active = true;
+    private boolean active = true;
 
     @PrePersist
     public void prePersist() {
         active = true;
+    }
+
+    // GETTERS & SETTERS
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
