@@ -14,22 +14,21 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
-@Service   // ✅ THIS IS THE FIX
+@Service
 public class AuthServiceImpl implements AuthService {
 
-    private final UserAccountRepository userRepo;
+    private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    public AuthServiceImpl(UserAccountRepository userRepo,
+    public AuthServiceImpl(UserAccountRepository userAccountRepository,
                            PasswordEncoder passwordEncoder,
                            AuthenticationManager authenticationManager,
                            JwtUtil jwtUtil) {
-        this.userRepo = userRepo;
+        this.userAccountRepository = userAccountRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
@@ -38,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponseDto register(RegisterRequestDto request) {
 
-        if (userRepo.existsByEmail(request.getEmail())) {
+        if (userAccountRepository.existsByEmail(request.getEmail())) {
             throw new BadRequestException("Email already exists");
         }
 
@@ -48,33 +47,44 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setActive(true);
 
-        userRepo.save(user);
+        userAccountRepository.save(user);
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("email", user.getEmail());
+        String token = jwtUtil.generateToken(
+                Map.of("email", user.getEmail()),
+                user.getEmail()
+        );
 
-        String token = jwtUtil.generateToken(claims, user.getEmail());
         return new AuthResponseDto(token);
     }
 
     @Override
     public AuthResponseDto login(AuthRequestDto request) {
 
-        UserAccount user = userRepo.findByEmail(request.getEmail())
+        UserAccount user = userAccountRepository
+                .findByEmail(request.getEmail())
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found"));
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
+        if (!user.isActive()) {
+            throw new BadRequestException("User is inactive");
+        }
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        } catch (Exception e) {
+            throw new BadRequestException("Invalid email or password");
+        }
+
+        String token = jwtUtil.generateToken(
+                Map.of("email", user.getEmail()),
+                user.getEmail()
         );
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("email", user.getEmail());
-
-        String token = jwtUtil.generateToken(claims, user.getEmail());
         return new AuthResponseDto(token);
     }
 }
