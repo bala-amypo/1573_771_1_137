@@ -1,6 +1,5 @@
 package com.example.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,49 +8,33 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String roleName;
 
     private String description;
 
-    @JsonIgnore
-    private boolean active = true;
+    private Boolean active = true;
 
-    @PrePersist
-    public void prePersist() {
-        active = true;
-    }
+    public Role() {}
 
-    // GETTERS & SETTERS
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
+    public Role(String roleName, String description, Boolean active) {
         this.roleName = roleName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
+        this.active = active != null ? active : true;
     }
 
-    public boolean isActive() {
-        return active;
-    }
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    public String getRoleName() { return roleName; }
+    public void setRoleName(String roleName) { this.roleName = roleName; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public boolean isActive() { return active != null && active; }
+    public void setActive(Boolean active) { this.active = active; }
 }

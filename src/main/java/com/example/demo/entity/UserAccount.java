@@ -1,9 +1,6 @@
 package com.example.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-
 import java.time.Instant;
 
 @Entity
@@ -12,73 +9,58 @@ public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
 
     private String fullName;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @JsonIgnore
-    private boolean active = true;
+    private Boolean active = true;
 
-    @JsonIgnore
     private Instant createdAt;
-
-    @JsonIgnore
     private Instant updatedAt;
 
     @PrePersist
     public void prePersist() {
-        createdAt = Instant.now();
-        updatedAt = Instant.now();
-        active = true;
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+        if (this.active == null) {
+            this.active = true;
+        }
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
-    // ✅ GETTERS & SETTERS (MANDATORY)
+    public UserAccount() {}
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    public UserAccount(String email, String fullName, Boolean active) {
         this.email = email;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
         this.fullName = fullName;
+        this.active = active != null ? active : true;
     }
 
-    public String getPassword() {
-        return password;
-    }
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public boolean isActive() {
-        return active;
-    }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public boolean isActive() { return active != null && active; }
+    public void setActive(Boolean active) { this.active = active; }
+
+    public Instant getCreatedAt() { return createdAt; }
+    public Instant getUpdatedAt() { return updatedAt; }
 }
