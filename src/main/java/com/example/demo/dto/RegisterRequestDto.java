@@ -3,8 +3,8 @@ package com.example.demo.dto;
 public class RegisterRequestDto {
 
     private String email;
-    private String password;
     private String fullName;
+    private String password;
 
     public RegisterRequestDto() {}
 
@@ -16,19 +16,19 @@ public class RegisterRequestDto {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
- 
-    public void setPassword(String password) {
-        this.password = password;
-    }
- 
     public String getFullName() {
         return fullName;
     }
- 
+
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
