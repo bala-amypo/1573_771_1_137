@@ -5,9 +5,11 @@ import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.PermissionRepository;
 import com.example.demo.service.PermissionService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service   // ✅ REQUIRED
 public class PermissionServiceImpl implements PermissionService {
 
     private final PermissionRepository repo;
@@ -19,7 +21,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public Permission createPermission(Permission permission) {
         if (repo.findByPermissionKey(permission.getPermissionKey()).isPresent()) {
-            throw new BadRequestException("Permission exists");
+            throw new BadRequestException("Permission already exists");
         }
         return repo.save(permission);
     }
